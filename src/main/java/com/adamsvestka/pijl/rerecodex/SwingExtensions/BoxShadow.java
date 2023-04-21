@@ -1,0 +1,65 @@
+package com.adamsvestka.pijl.rerecodex.SwingExtensions;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.RenderingHints;
+
+import javax.swing.border.Border;
+
+public class BoxShadow implements Border {
+    private int blur;
+    private int spread2;
+    private int radius;
+    private Point offset;
+    private Color shadowColor;
+
+    private int left, top, leftright, topbottom;
+
+    public BoxShadow(int offsetX, int offsetY, int blur, int spread, Color shadowColor, int radius) {
+        this.blur = blur;
+        this.shadowColor = new Color(shadowColor.getRed(), shadowColor.getGreen(),
+                shadowColor.getBlue(), shadowColor.getAlpha() / (2 * blur + 1));
+        this.radius = radius;
+
+        offset = new Point(offsetX - spread, offsetY - spread);
+        spread2 = spread * 2;
+
+        left = -Math.max(0, blur - offset.y);
+        top = -Math.max(0, blur - offset.x);
+        leftright = Math.max(0, blur + offset.y + spread2) - left;
+        topbottom = Math.max(0, blur + offset.x + spread2) - top;
+    }
+
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        var g2d = (Graphics2D) g;
+        var origComposite = g2d.getComposite();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // g2d.setComposite(AlphaComposite.DstOver);
+
+        g.setClip(left, top, width + leftright, height + topbottom);
+        g.setColor(shadowColor);
+
+        for (int i = -blur; i <= blur; i++) {
+            g.fillRoundRect(offset.x - i, offset.y - i, width + spread2 + 2 * i,
+                    height + spread2 + 2 * i, radius + i, radius + i);
+        }
+
+        g2d.setComposite(origComposite);
+    }
+
+    @Override
+    public Insets getBorderInsets(Component c) {
+        return new Insets(0, 0, 0, 0);
+    }
+
+    @Override
+    public boolean isBorderOpaque() {
+        return true;
+    }
+}

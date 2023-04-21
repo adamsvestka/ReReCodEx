@@ -1,4 +1,4 @@
-package com.adamsvestka.pijl;
+package com.adamsvestka.pijl.rerecodex;
 
 import java.io.IOException;
 import java.net.CookieManager;
