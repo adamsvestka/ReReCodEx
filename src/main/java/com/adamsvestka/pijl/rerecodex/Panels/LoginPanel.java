@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.ReCodEx;
 import com.adamsvestka.pijl.rerecodex.Components.Button;
 import com.adamsvestka.pijl.rerecodex.Components.InputField;
@@ -26,7 +27,7 @@ public class LoginPanel extends JPanel {
         super();
 
         setLayout(null);
-        setBackground(Color.decode("#ffffff"));
+        setBackground(ColorPalette.white);
         setOpaque(false);
         setBorder(BorderFactory.createCompoundBorder(
                 new BoxShadow(0, 0, 4, 0, new Color(0x3f000000, true), 10),
@@ -74,7 +75,7 @@ public class LoginPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-        g.setColor(Color.decode("#c2c7d0"));
+        g.setColor(ColorPalette.light_gray);
         g.drawLine(getInsets().left, 41, getWidth() - getInsets().right, 41);
     }
 }

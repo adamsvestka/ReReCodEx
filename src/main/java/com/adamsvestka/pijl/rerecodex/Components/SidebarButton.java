@@ -8,25 +8,19 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 
-public class SidebarButton extends JButton implements MouseListener {
-    private static final Color background = Color.decode("#343a40");
-    private static final Color foreground = Color.decode("#c2c7d0");
-    private static final Color hoverBackground = Color.decode("#484f58");
-    private static final Color hoverForeground = Color.decode("#ffffff");
-    private static final Color activeBackground = Color.decode("#28a745");
-    private static final Color activeForeground = Color.decode("#ffffff");
+import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
-    private boolean isActive = false;
+public class SidebarButton extends JButton implements MouseListener {
+    private static final Color color_background = ColorPalette.dark_gray;
+    private static final Color color_foreground = ColorPalette.light_gray;
+    private static final Color color_background_hover = ColorPalette.dark_gray2;
+    private static final Color color_foreground_hover = ColorPalette.white;
 
     public SidebarButton(String text) {
         super(text);
 
-        initComponents();
-    }
-
-    private void initComponents() {
-        setBackground(background);
-        setForeground(foreground);
+        setBackground(color_background);
+        setForeground(color_foreground);
 
         setFont(getFont().deriveFont(16f));
         setHorizontalAlignment(LEFT);
@@ -47,13 +41,6 @@ public class SidebarButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (isActive = !isActive) {
-            setBackground(activeBackground);
-            setForeground(activeForeground);
-        } else {
-            setBackground(hoverBackground);
-            setForeground(hoverForeground);
-        }
     }
 
     @Override
@@ -66,17 +53,13 @@ public class SidebarButton extends JButton implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (!isActive) {
-            setBackground(hoverBackground);
-            setForeground(hoverForeground);
-        }
+        setBackground(color_background_hover);
+        setForeground(color_foreground_hover);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if (!isActive) {
-            setBackground(background);
-            setForeground(foreground);
-        }
+        setBackground(color_background);
+        setForeground(color_foreground);
     }
 }

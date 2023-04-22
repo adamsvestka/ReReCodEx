@@ -23,10 +23,6 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import cz.cuni.mff.recodex.api.v1.ReCodExApiDeserializer;
 
 public class App extends JFrame {
-    // private JTextField usernameField;
-    // private JTextField passwordField;
-    // private JButton loginButton;
-    // private JLabel responseLabel;
     private JPanel mainarea;
     private LoginPanel loginPanel;
     private Sidebar sidebar;
@@ -34,54 +30,18 @@ public class App extends JFrame {
     public App() {
         super("ReReCodEx");
 
-        initComponents();
-    }
-
-    public void initComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
 
         mainarea = new JPanel();
-        // mainarea.setBackground(new Color(244, 246, 249));
+        mainarea.setBackground(new Color(244, 246, 249));
         mainarea.setLayout(new GridBagLayout());
 
         loginPanel = new LoginPanel();
 
         mainarea.add(loginPanel);
 
-        // usernameField = new JTextField();
-        // passwordField = new JTextField();
-        // loginButton = new JButton("Login");
-        // responseLabel = new JLabel("Hello, World!");
-
         sidebar = new Sidebar();
-
-        // loginButton.addActionListener(this::loginButtonActionPerformed);
-
-        // GroupLayout layout = new GroupLayout(panel);
-        // panel.setLayout(layout);
-        // layout.setHorizontalGroup(layout.createSequentialGroup()
-        //         .addGroup(layout.createParallelGroup()
-        //                 .addComponent(usernameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-        //                         GroupLayout.PREFERRED_SIZE)
-        //                 .addComponent(loginButton))
-        //         .addPreferredGap(ComponentPlacement.RELATED)
-        //         .addGroup(layout.createParallelGroup()
-        //                 .addComponent(passwordField)
-        //                 .addComponent(responseLabel)));
-
-        // layout.linkSize(SwingConstants.HORIZONTAL, usernameField, loginButton);
-        // layout.linkSize(SwingConstants.HORIZONTAL, passwordField, responseLabel);
-
-        // layout.setVerticalGroup(layout.createSequentialGroup()
-        //         .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        //                 .addComponent(usernameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-        //                         GroupLayout.PREFERRED_SIZE)
-        //                 .addComponent(passwordField))
-        //         .addPreferredGap(ComponentPlacement.RELATED)
-        //         .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        //                 .addComponent(loginButton)
-        //                 .addComponent(responseLabel)));
 
         getContentPane().add(mainarea);
         getContentPane().add(sidebar, BorderLayout.WEST);
@@ -91,16 +51,6 @@ public class App extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-    // private void loginButtonActionPerformed(ActionEvent evt) {
-    //     try {
-    //         var user = ReCodEx.authenticate(usernameField.getText(), passwordField.getText());
-
-    //         responseLabel.setText(String.format("Hello, %s!", user.payload.user.name.firstName));
-    //     } catch (Exception e) {
-    //         responseLabel.setText("Invalid credentials");
-    //     }
-    // }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::new);

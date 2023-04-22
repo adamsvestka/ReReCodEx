@@ -10,16 +10,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Sidebar extends JPanel {
-    private List<SidebarButton> buttons;
+import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
+public class Sidebar extends JPanel {
+    private static final Color color_background = ColorPalette.dark_gray;
+    private static final Color color_foreground = ColorPalette.light_gray;
     private static final int padding = 10;
-    private static final Color background = Color.decode("#343a40");
+
+    private List<SidebarButton> buttons;
 
     public Sidebar() {
         super();
 
-        setBackground(background);
+        setBackground(color_background);
         setBorder(new EmptyBorder(padding, padding, padding, padding));
 
         buttons = List.of(
@@ -30,7 +33,7 @@ public class Sidebar extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         var menuLabel = new JLabel("MENU");
-        menuLabel.setForeground(Color.decode("#c2c7d0"));
+        menuLabel.setForeground(color_foreground);
         menuLabel.setBorder(new EmptyBorder(padding, padding, 0, 0));
 
         add(menuLabel);

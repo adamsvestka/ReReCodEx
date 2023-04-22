@@ -13,16 +13,14 @@ import java.util.function.Consumer;
 
 import javax.swing.JButton;
 
+import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 
 public class Button extends JButton implements MouseListener {
-    private static final Color background1 = Color.decode("#48b461");
-    private static final Color background2 = Color.decode("#28a745");
-    private static final Color foreground = Color.decode("#c2c7d0");
-    private static final Color hoverBackground = Color.decode("#484f58");
-    private static final Color hoverForeground = Color.decode("#ffffff");
-    private static final Color activeBackground = Color.decode("#28a745");
-    private static final Color activeForeground = Color.decode("#ffffff");
+    private static final Color gradient_background1 = ColorPalette.green;
+    private static final Color gradient_background2 = ColorPalette.green2;
+    private static final Color color_background_hover = ColorPalette.dark_gray2;
+    private static final Color color_foreground_hover = ColorPalette.white;
 
     private Consumer<MouseEvent> onClick;
 
@@ -32,7 +30,7 @@ public class Button extends JButton implements MouseListener {
         this.onClick = onClick;
 
         // setBackground(background);
-        setForeground(hoverForeground);
+        setForeground(color_foreground_hover);
 
         setFont(getFont().deriveFont(16f));
 
@@ -53,12 +51,11 @@ public class Button extends JButton implements MouseListener {
 
         var origComposite = g2d.getComposite();
 
-
         var bg = new LinearGradientPaint(
                 new Point(0, 0),
                 new Point(0, getHeight()),
                 new float[] { 0, 1 },
-                new Color[] { background1, background2 });
+                new Color[] { gradient_background1, gradient_background2 });
         ((Graphics2D) g).setPaint(bg);
         g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
 
@@ -72,7 +69,7 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        setBackground(hoverBackground);
+        setBackground(color_background_hover);
         // setForeground(hoverForeground);
 
         onClick.accept(e);
@@ -88,7 +85,7 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        setBackground(hoverBackground);
+        setBackground(color_background_hover);
         // setForeground(hoverForeground);
     }
 
