@@ -10,6 +10,10 @@ public class ColorPalette {
 
     public static final Color green = Color.decode("#48b461");
     public static final Color green2 = Color.decode("#28a745");
+    public static final Color dark_green = Color.decode("#429a56");
+    public static final Color dark_green2 = Color.decode("#218838");
+    public static final Color darker_green = Color.decode("#409152");
+    public static final Color darker_green2 = Color.decode("#1e7e34");
 
     public static final Color blue = Color.decode("#007bff");
 }

@@ -30,7 +30,7 @@ public class LoginPanel extends JPanel {
         setBackground(ColorPalette.white);
         setOpaque(false);
         setBorder(BorderFactory.createCompoundBorder(
-                new BoxShadow(0, 0, 4, 0, new Color(0x3f000000, true), 10),
+                new BoxShadow(0, 1, 3, 0, new Color(0x3f000000, true), 10),
                 new RoundedBox(10)));
 
         var titleLabel = new JLabel("Login with CAS account");
