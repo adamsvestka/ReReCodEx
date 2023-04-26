@@ -38,12 +38,11 @@ public class Button extends JButton implements MouseListener {
         this.onClick = onClick;
 
         setForeground(color_foreground);
-
         setFont(getFont().deriveFont(16f));
 
         setBorder(new BoxShadow(0, 1, 3, 0, new Color(0x3f000000, true), 10));
-        setFocusPainted(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        setFocusPainted(false);
 
         addMouseListener(this);
     }

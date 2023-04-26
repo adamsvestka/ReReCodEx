@@ -3,6 +3,7 @@ package com.adamsvestka.pijl.rerecodex;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,7 +26,13 @@ import cz.cuni.mff.recodex.api.v1.ReCodExApiDeserializer;
 public class App extends JFrame {
     private JPanel mainarea;
     private LoginPanel loginPanel;
-    private Sidebar sidebar;
+    private Sidebar<Pages> sidebar;
+
+    private enum Pages {
+        login,
+        logout,
+        register,
+    }
 
     public App() {
         super("ReReCodEx");
@@ -41,7 +48,12 @@ public class App extends JFrame {
 
         mainarea.add(loginPanel);
 
-        sidebar = new Sidebar();
+        sidebar = new Sidebar<Pages>(Map.of(
+                "🏠 Login", Pages.login,
+                "􀻶 Logout", Pages.logout,
+                "􀍟 Register", Pages.register), e -> {
+                    System.out.println(e);
+                });
 
         getContentPane().add(mainarea);
         getContentPane().add(sidebar, BorderLayout.WEST);

@@ -26,12 +26,18 @@ public class LoginPanel extends JPanel {
     public LoginPanel() {
         super();
 
-        setLayout(null);
         setBackground(ColorPalette.white);
-        setOpaque(false);
         setBorder(BorderFactory.createCompoundBorder(
                 new BoxShadow(0, 1, 3, 0, new Color(0x3f000000, true), 10),
                 new RoundedBox(10)));
+        setOpaque(false);
+
+        initComponents();
+    }
+
+    private void initComponents() {
+        setPreferredSize(new Dimension(400, 300));
+        setLayout(null);
 
         var titleLabel = new JLabel("Login with CAS account");
         var usernameLabel = new JLabel("Username:");
@@ -64,11 +70,6 @@ public class LoginPanel extends JPanel {
         passwordLabel.setBounds(20, 150, 200, 20);
         passwordField.setBounds(inset, 180, width - 2 * inset, 35);
         loginButton.setBounds(155, 245, 90, 35);
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(400, 300);
     }
 
     @Override
