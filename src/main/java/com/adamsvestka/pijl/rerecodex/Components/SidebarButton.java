@@ -1,6 +1,7 @@
 package com.adamsvestka.pijl.rerecodex.Components;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -33,8 +34,9 @@ public class SidebarButton extends JButton implements MouseListener {
         setForeground(color_foreground);
 
         setFont(getFont().deriveFont(16f));
-        setHorizontalAlignment(LEFT);
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        setHorizontalAlignment(LEFT);
 
         setOpaque(false);
         setBorderPainted(false);

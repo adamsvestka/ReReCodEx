@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import cz.cuni.mff.recodex.api.v1.ReCodExApiMapper;
+
 public class ReCodEx {
     public static cz.cuni.mff.recodex.api.v1.login.cas_uk authenticate(String username, String password) {
         HttpClient client = HttpClient.newBuilder()
@@ -82,7 +84,7 @@ public class ReCodEx {
                     .build();
             response = client.send(request, BodyHandlers.ofString());
 
-            return App.mapper.readValue(response.body(), cz.cuni.mff.recodex.api.v1.login.cas_uk.class);
+            return ReCodExApiMapper.getInstance().readValue(response.body(), cz.cuni.mff.recodex.api.v1.login.cas_uk.class);
         } catch (URISyntaxException e) {
             throw new RuntimeException("INTERNAL: Invalid URI syntax: " + e.getMessage());
         } catch (IOException e) {

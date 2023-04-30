@@ -2,8 +2,10 @@ package com.adamsvestka.pijl.rerecodex.Components;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import javax.swing.Box;
@@ -14,57 +16,76 @@ import javax.swing.border.EmptyBorder;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
-public class Sidebar<E extends Enum<E>> extends JPanel {
+public class Sidebar<T> extends JPanel {
     private static final Color color_background = ColorPalette.dark_gray;
     private static final Color color_foreground = ColorPalette.light_gray;
     private static final int padding = 10;
+    private static final int width = 200;
 
-    private Map<SidebarButton, Enum<E>> buttons = new HashMap<>();
+    private JPanel container;
 
-    private Consumer<Enum<E>> onChange;
+    private List<Entry<SidebarButton, T>> buttons = new ArrayList<>();
+    private Consumer<T> onChange;
 
-    public Sidebar(Map<String, Enum<E>> buttons, Consumer<Enum<E>> onClick) {
+    public Sidebar(Consumer<T> onChange) {
         super();
 
-        this.onChange = onClick;
-
-        for (var entry : buttons.entrySet())
-            addButton(entry.getKey(), entry.getValue());
+        this.onChange = onChange;
 
         setBackground(color_background);
-        setBorder(new EmptyBorder(padding, padding, padding, padding));
 
         initComponents();
-
-        var initialButton = this.buttons.keySet().iterator().next();
-        initialButton.setActive(true);
-        onChange.accept(this.buttons.get(initialButton));
     }
 
     private void initComponents() {
-        setPreferredSize(new Dimension(200, 200));
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
+
+        var userCard = new UserCard();
+        container = new JPanel();
+
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
+        container.setBorder(new EmptyBorder(padding, padding, padding, padding));
+        container.setBackground(color_background);
+
+        add(userCard);
+        add(container);
 
         var menuLabel = new JLabel("MENU");
-        menuLabel.setForeground(color_foreground);
-        menuLabel.setBorder(new EmptyBorder(padding, padding, 0, 0));
 
-        add(menuLabel, 0);
+        menuLabel.setForeground(color_foreground);
+        menuLabel.setBorder(new EmptyBorder(0, padding, 0, 0));
+
+        container.add(menuLabel);
     }
 
-    private void addButton(String text, Enum<E> value) {
+    public void clearButtons() {
+        buttons.clear();
+        for (var component : container.getComponents())
+            if (component instanceof SidebarButton || component instanceof Box)
+                container.remove(component);
+    }
+
+    public void addButton(String text, T value) {
         var button = new SidebarButton(text, e -> {
             var source = (SidebarButton) e.getSource();
             if (source.getActive())
                 return;
-            for (var entry : buttons.entrySet())
+            for (var entry : buttons) {
                 entry.getKey().setActive(entry.getKey() == source);
-            onChange.accept(buttons.get(source));
+                if (entry.getKey() == source)
+                    onChange.accept(entry.getValue());
+            }
         });
 
-        buttons.put(button, value);
+        buttons.add(new SimpleEntry<>(button, value));
 
-        add(Box.createRigidArea(new Dimension(0, 3)));
-        add(button);
+        container.add(Box.createRigidArea(new Dimension(0, 3)));
+        container.add(button);
+
+        if (buttons.size() == 1) {
+            button.setActive(true);
+            onChange.accept(value);
+        }
     }
 }

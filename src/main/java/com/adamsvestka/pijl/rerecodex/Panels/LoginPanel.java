@@ -15,6 +15,7 @@ import com.adamsvestka.pijl.rerecodex.ReCodEx;
 import com.adamsvestka.pijl.rerecodex.Components.Button;
 import com.adamsvestka.pijl.rerecodex.Components.InputField;
 import com.adamsvestka.pijl.rerecodex.Components.PasswordField;
+import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 
@@ -47,6 +48,9 @@ public class LoginPanel extends JPanel {
         loginButton = new Button("Login", e -> {
             try {
                 var user = ReCodEx.authenticate(usernameField.getText(), passwordField.getText());
+
+                Model.getInstance().accessToken = user.payload.accessToken;
+                Model.getInstance().user.load(user.payload);
 
                 System.out.printf("Hello, %s!%n", user.payload.user.name.firstName);
             } catch (Exception ex) {

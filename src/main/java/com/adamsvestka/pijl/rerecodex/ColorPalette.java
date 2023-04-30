@@ -4,6 +4,7 @@ import java.awt.Color;
 
 public class ColorPalette {
     public static final Color white = Color.decode("#ffffff");
+    public static final Color light_gray2 = Color.decode("#f4f6f9");
     public static final Color light_gray = Color.decode("#c2c7d0");
     public static final Color dark_gray2 = Color.decode("#484f58");
     public static final Color dark_gray = Color.decode("#343a40");
