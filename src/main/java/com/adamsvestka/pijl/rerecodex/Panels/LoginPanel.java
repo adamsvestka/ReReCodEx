@@ -3,6 +3,8 @@ package com.adamsvestka.pijl.rerecodex.Panels;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements KeyListener {
     private JTextField usernameField;
     private JTextField passwordField;
     private JButton loginButton;
@@ -31,6 +33,7 @@ public class LoginPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(
                 new BoxShadow(0, 1, 3, 0, new Color(0x3f000000, true), 10),
                 new RoundedBox(10)));
+
         setOpaque(false);
 
         initComponents();
@@ -58,6 +61,9 @@ public class LoginPanel extends JPanel {
             }
         });
 
+        usernameField.addKeyListener(this);
+        passwordField.addKeyListener(this);
+
         add(titleLabel);
         add(usernameLabel);
         add(usernameField);
@@ -82,5 +88,19 @@ public class LoginPanel extends JPanel {
 
         g.setColor(ColorPalette.light_gray);
         g.drawLine(getInsets().left, 41, getWidth() - getInsets().right, 41);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            loginButton.doClick();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 }

@@ -6,17 +6,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.Point;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.function.Consumer;
 
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 
-public class Button extends JButton implements MouseListener {
+public class Button extends JButton implements MouseListener, FocusListener {
     private static final Color color_background1 = ColorPalette.green;
     private static final Color color_background2 = ColorPalette.green2;
     private static final Color color_foreground = ColorPalette.white;
@@ -26,16 +27,14 @@ public class Button extends JButton implements MouseListener {
     private static final Color color_background_active1 = ColorPalette.darker_green;
     private static final Color color_background_active2 = ColorPalette.darker_green2;
     private static final Color color_foreground_active = ColorPalette.white;
-
-    private Consumer<MouseEvent> onClick;
+    private static final Color color_border_focus = ColorPalette.blue;
 
     private boolean hovered = false;
     private boolean active = false;
+    private boolean focused = false;
 
-    public Button(String text, Consumer<MouseEvent> onClick) {
+    public Button(String text, ActionListener onClick) {
         super(text);
-
-        this.onClick = onClick;
 
         setForeground(color_foreground);
         setFont(getFont().deriveFont(16f));
@@ -45,28 +44,60 @@ public class Button extends JButton implements MouseListener {
         setFocusPainted(false);
 
         addMouseListener(this);
+        addFocusListener(this);
+        addActionListener(e -> {
+            setEnabled(false);
+            onClick.actionPerformed(e);
+            setEnabled(true);
+        });
     }
 
     @Override
     public void paint(Graphics g) {
         super.paintBorder(g);
 
+        var g2d = (Graphics2D) g;
+
+        Color[] color;
+        if (active) {
+            color = new Color[] { color_background_active1, color_background_active2 };
+        } else if (focused || hovered) {
+            color = new Color[] { color_background_hover1, color_background_hover2 };
+        } else {
+            color = new Color[] { color_background1, color_background2 };
+        }
+
         var bg = new LinearGradientPaint(
                 new Point(0, 0),
                 new Point(0, getHeight()),
                 new float[] { 0, 1 },
-                active ? new Color[] { color_background_active1, color_background_active2 }
-                        : hovered ? new Color[] { color_background_hover1, color_background_hover2 }
-                                : new Color[] { color_background1, color_background2 });
-        ((Graphics2D) g).setPaint(bg);
-        g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                color);
+
+        if (focused && !hovered) {
+            g.setColor(color_border_focus);
+            g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+            g2d.setPaint(bg);
+            g.fillRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 8, 8);
+        } else {
+            g2d.setPaint(bg);
+            g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+        }
 
         super.paintComponent(g);
     }
 
     @Override
+    public void focusGained(FocusEvent e) {
+        focused = true;
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        focused = false;
+    }
+
+    @Override
     public void mouseClicked(MouseEvent e) {
-        SwingUtilities.invokeLater(() -> onClick.accept(e));
     }
 
     @Override

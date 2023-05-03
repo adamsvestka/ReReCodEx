@@ -14,4 +14,17 @@ public class User extends Observable<User> {
 
         notifySubscribers();
     }
+
+    public boolean isLoggedIn() {
+        return id != null;
+    }
+
+    public void logout() {
+        id = null;
+        name = null;
+        email = null;
+        avatarUrl = null;
+
+        notifySubscribers();
+    }
 }

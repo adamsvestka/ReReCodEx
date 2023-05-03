@@ -32,9 +32,10 @@ public class UserCard extends JPanel {
         setBackground(color_background);
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        Model.getInstance().user.subscribe(this::update);
-
         initComponents();
+
+        Model.getInstance().user.subscribe(this::update);
+        update(Model.getInstance().user);
     }
 
     private void initComponents() {
@@ -55,6 +56,8 @@ public class UserCard extends JPanel {
 
         var settings = new JButton("Settings");
         var logout = new JButton("Logout");
+
+        logout.addActionListener(e -> Model.getInstance().user.logout());
 
         container.add(settings);
         // container.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -77,6 +80,8 @@ public class UserCard extends JPanel {
     }
 
     private void update(User user) {
+        setVisible(user.isLoggedIn());
+
         usernameLabel.setText(user.name);
 
         try {
@@ -85,9 +90,12 @@ public class UserCard extends JPanel {
             ImageIcon icon = new ImageIcon(image);
             usernameLabel.setIcon(icon);
         } catch (Exception ex) {
-            System.out.println("Failed to load user avatar");
+            usernameLabel.setIcon(null);
         }
 
-        getParent().repaint();
+        if (getParent() != null) {
+            getParent().revalidate();
+            getParent().repaint();
+        }
     }
 }

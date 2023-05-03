@@ -4,12 +4,11 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.function.Consumer;
 
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
@@ -21,14 +20,10 @@ public class SidebarButton extends JButton implements MouseListener {
     private static final Color color_background_active = ColorPalette.green2;
     private static final Color color_foreground_active = ColorPalette.white;
 
-    private Consumer<MouseEvent> onClick;
-
     private boolean active = false;
 
-    public SidebarButton(String text, Consumer<MouseEvent> onClick) {
+    public SidebarButton(String text, ActionListener onClick) {
         super(text);
-
-        this.onClick = onClick;
 
         setBackground(color_background);
         setForeground(color_foreground);
@@ -40,9 +35,10 @@ public class SidebarButton extends JButton implements MouseListener {
 
         setOpaque(false);
         setBorderPainted(false);
-        setFocusPainted(false);
+        setFocusable(false);
 
         addMouseListener(this);
+        addActionListener(onClick);
     }
 
     public boolean getActive() {
@@ -69,7 +65,6 @@ public class SidebarButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        SwingUtilities.invokeLater(() -> onClick.accept(e));
     }
 
     @Override

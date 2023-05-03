@@ -10,6 +10,7 @@ import javax.swing.border.Border;
 
 public class RoundedBox implements Border {
     private int radius;
+    private boolean visible = true;
 
     public RoundedBox(int radius) {
         this.radius = radius;
@@ -17,6 +18,9 @@ public class RoundedBox implements Border {
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        if (!visible)
+            return;
+
         var g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -32,5 +36,13 @@ public class RoundedBox implements Border {
     @Override
     public boolean isBorderOpaque() {
         return true;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }
