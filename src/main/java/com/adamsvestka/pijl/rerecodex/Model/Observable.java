@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.swing.SwingUtilities;
+
 public class Observable<T extends Observable<T>> {
     private List<Consumer<T>> subscribers = new ArrayList<>();
 
@@ -17,7 +19,8 @@ public class Observable<T extends Observable<T>> {
 
     @SuppressWarnings("unchecked")
     public void notifySubscribers() {
-        for (var subscriber : subscribers)
-            subscriber.accept((T) this);
+        for (var subscriber : subscribers) {
+            SwingUtilities.invokeLater(() -> subscriber.accept((T) this));
+        }
     }
 }

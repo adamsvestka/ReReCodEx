@@ -60,7 +60,6 @@ public class UserCard extends JPanel {
         logout.addActionListener(e -> Model.getInstance().user.logout());
 
         container.add(settings);
-        // container.add(Box.createRigidArea(new Dimension(10, 0)));
         container.add(logout);
     }
 

@@ -1,5 +1,7 @@
 package com.adamsvestka.pijl.rerecodex.Model;
 
+import com.adamsvestka.pijl.rerecodex.LocalStorage;
+
 public class User extends Observable<User> {
     public String id;
     public String name;
@@ -24,6 +26,9 @@ public class User extends Observable<User> {
         name = null;
         email = null;
         avatarUrl = null;
+
+        LocalStorage.remove("username");
+        LocalStorage.remove("password");
 
         notifySubscribers();
     }

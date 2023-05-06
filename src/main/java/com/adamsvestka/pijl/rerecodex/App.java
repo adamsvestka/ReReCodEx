@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import com.adamsvestka.pijl.rerecodex.Components.Sidebar;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.Model.User;
+import com.adamsvestka.pijl.rerecodex.Panels.DashboardPanel;
 import com.adamsvestka.pijl.rerecodex.Panels.LoginPanel;
 
 public class App extends JFrame {
@@ -54,7 +55,7 @@ public class App extends JFrame {
         if (user.id == null) {
             sidebar.addButton("􀻶 Login", new LoginPanel());
         } else {
-            sidebar.addButton("􀍾 Dashboard", new JPanel());
+            sidebar.addButton("􀍾 Dashboard", new DashboardPanel());
             sidebar.addButton("􀈕 Homeworks", new JPanel());
             sidebar.addButton("􀁜 Help", new JPanel());
         }
