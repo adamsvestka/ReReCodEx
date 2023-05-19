@@ -39,7 +39,7 @@ public class App extends JFrame {
         getContentPane().add(sidebar, BorderLayout.WEST);
 
         pack();
-        setSize(800, 600);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         setVisible(true);
     }

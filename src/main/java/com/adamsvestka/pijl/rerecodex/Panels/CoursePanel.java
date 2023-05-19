@@ -38,9 +38,10 @@ public class CoursePanel extends JPanel {
         container = new JPanel();
         scrollPane = new JScrollPane(container,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setAlignmentX(LEFT_ALIGNMENT);
         container.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         container.setOpaque(false);
         scrollPane.setOpaque(false);

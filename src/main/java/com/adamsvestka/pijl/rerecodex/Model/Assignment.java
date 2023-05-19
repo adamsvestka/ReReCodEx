@@ -1,6 +1,8 @@
 package com.adamsvestka.pijl.rerecodex.Model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +20,7 @@ public class Assignment extends Observable<Assignment> {
         public int points;
 
         public Deadline(long time, long points) {
-            this.time = LocalDateTime.ofEpochSecond(time, 0, null);
+            this.time = LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC);
             this.points = (int) points;
         }
     }
@@ -27,7 +29,8 @@ public class Assignment extends Observable<Assignment> {
         id = assignment.id;
         name = Model.getLocalizedText(assignment.localizedTexts, Locale.en).name;
         body = Model.getLocalizedText(assignment.localizedTexts, Locale.en).text;
-        deadlines = List.of(new Deadline(assignment.firstDeadline, assignment.maxPointsBeforeFirstDeadline));
+        deadlines = new ArrayList<>(2);
+        deadlines.add(new Deadline(assignment.firstDeadline, assignment.maxPointsBeforeFirstDeadline));
         if (assignment.allowSecondDeadline) {
             deadlines.add(new Deadline(assignment.secondDeadline, assignment.maxPointsBeforeSecondDeadline));
         }

@@ -27,7 +27,11 @@ public class Group extends Observable<Group> {
         assignments.clear();
         ReCodEx.getAssignments(id)
                 .thenApply(e -> e.stream().map(Assignment::build).toList())
-                .thenAccept(assignments::addAll);
+                .thenAccept(assignments::addAll)
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
 
         notifySubscribers();
     }
