@@ -1,8 +1,10 @@
 package com.adamsvestka.pijl.rerecodex.Panels;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,16 +46,23 @@ public class CoursePanel extends JPanel {
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         add(scrollPane);
     }
 
     private void update(List<Group> groups) {
         try {
-            courses.forEach(container::remove);
+            container.removeAll();
             courses = groups.stream().map(CourseCard::new).toList();
-            courses.forEach(container::add);
+            for (int i = 0; i < courses.size(); i++) {
+                container.add(courses.get(i));
+                if (i < courses.size() - 1)
+                    container.add(Box.createRigidArea(new Dimension(0, 20)));
+            }
 
+            container.revalidate();
+            container.repaint();
         } catch (Exception e) {
             e.printStackTrace();
         }

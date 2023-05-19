@@ -77,15 +77,12 @@ public class LoginPanel extends JPanel implements KeyListener {
                         Model.getInstance().accessToken = user.payload.accessToken;
                         Model.getInstance().user.load(user.payload);
 
-                        System.out.printf("Hello, %s!%n", user.payload.user.name.firstName);
-
                         if (rememberMeCheckbox.isSelected()) {
                             LocalStorage.set("username", usernameField.getText());
                             LocalStorage.set("password", passwordField.getText(), true);
                         }
                     }).exceptionally(e -> {
                         setState(LoginPanel.State.error);
-                        System.out.println("Login failed!");
                         return null;
                     });
         });

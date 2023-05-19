@@ -3,6 +3,7 @@ package cz.cuni.mff.recodex.api.v1.groups.$id.assignments;
 import java.util.List;
 import java.util.UUID;
 
+import cz.cuni.mff.recodex.api.v1.ILocalizedText;
 import cz.cuni.mff.recodex.api.v1.Locale;
 
 public class Response {
@@ -40,7 +41,7 @@ public class Response {
         public long solutionSizeLimit;
         public PermissionHints permissionHints;
 
-        public static class LocalizedText {
+        public static class LocalizedText extends ILocalizedText {
             public UUID id;
             public Locale locale;
             public String name;

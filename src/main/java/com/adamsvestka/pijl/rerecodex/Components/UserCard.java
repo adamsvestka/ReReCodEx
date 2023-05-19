@@ -83,6 +83,14 @@ public class UserCard extends JPanel {
 
         usernameLabel.setText(user.name);
 
+        revalidate();
+        repaint();
+
+        if (user.avatarUrl == null) {
+            usernameLabel.setIcon(null);
+            return;
+        }
+
         try {
             URL url = new URI("http:" + user.avatarUrl).toURL();
             Image image = ImageIO.read(url).getScaledInstance(image_size, image_size, Image.SCALE_SMOOTH);
@@ -90,11 +98,6 @@ public class UserCard extends JPanel {
             usernameLabel.setIcon(icon);
         } catch (Exception ex) {
             usernameLabel.setIcon(null);
-        }
-
-        if (getParent() != null) {
-            getParent().revalidate();
-            getParent().repaint();
         }
     }
 }

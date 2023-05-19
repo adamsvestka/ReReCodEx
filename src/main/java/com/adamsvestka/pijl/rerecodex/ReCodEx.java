@@ -12,6 +12,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -159,6 +160,37 @@ public class ReCodEx {
 
             return ReCodExApiMapper.getInstance().readValue(response.body(),
                     cz.cuni.mff.recodex.api.v1.groups.Response.class);
+        });
+    }
+
+    public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.Response.Payload> getUser(UUID userId) {
+        return runInBackground(() -> {
+            // ===== GET https://recodex.mff.cuni.cz/api/v1/users/[id] =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/users/%s",
+                            URLEncoder.encode(userId.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.users.$id.Response.class).payload;
+        });
+    }
+
+    public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.assignments.Response.Payload>> getAssignments(
+            UUID groupId) {
+        return runInBackground(() -> {
+            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups/[id]/assignments =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/groups/%s/assignments",
+                            URLEncoder.encode(groupId.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.groups.$id.assignments.Response.class).payload;
         });
     }
 }

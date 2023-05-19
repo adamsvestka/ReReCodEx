@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import cz.cuni.mff.recodex.api.v1.ILocalizedText;
 import cz.cuni.mff.recodex.api.v1.Locale;
 
 public class Response {
@@ -43,7 +44,7 @@ public class Response {
             public Object privateData;
             public PermissionHints permissionHints;
 
-            public static class LocalizedText {
+            public static class LocalizedText extends ILocalizedText {
                 public UUID id;
                 public Locale locale;
                 public String name;
