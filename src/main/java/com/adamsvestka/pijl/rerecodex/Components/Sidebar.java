@@ -66,15 +66,20 @@ public class Sidebar<T> extends JPanel {
                 container.remove(component);
     }
 
+    public void deselectButtons() {
+        for (var entry : buttons)
+            entry.getKey().setActive(false);
+    }
+
     public void addButton(String text, T value) {
         var button = new SidebarButton(text, e -> {
             var source = (SidebarButton) e.getSource();
             if (source.getActive())
                 return;
             for (var entry : buttons) {
-                entry.getKey().setActive(entry.getKey() == source);
                 if (entry.getKey() == source)
                     onChange.accept(entry.getValue());
+                entry.getKey().setActive(entry.getKey() == source);
             }
         });
 
@@ -84,8 +89,8 @@ public class Sidebar<T> extends JPanel {
         container.add(button);
 
         if (buttons.size() == 1) {
-            button.setActive(true);
             onChange.accept(value);
+            button.setActive(true);
         }
     }
 }

@@ -193,4 +193,20 @@ public class ReCodEx {
                     cz.cuni.mff.recodex.api.v1.groups.$id.assignments.Response.class).payload;
         });
     }
+
+    public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.Payload>> getStats(
+            UUID id) {
+        return runInBackground(() -> {
+            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups/[id]/students/stats =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/groups/%s/students/stats",
+                            URLEncoder.encode(id.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.class).payload;
+        });
+    }
 }

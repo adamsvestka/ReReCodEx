@@ -18,7 +18,12 @@ public class User extends Observable<User> {
 
     public User(UUID id) {
         this.id = id;
-        ReCodEx.getUser(id).thenAccept(this::load);
+        ReCodEx.getUser(id)
+                .thenAccept(this::load)
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
     }
 
     public void load(cz.cuni.mff.recodex.api.v1.login.cas_uk.Response.Payload payload) {

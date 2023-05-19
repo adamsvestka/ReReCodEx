@@ -1,0 +1,15 @@
+code {
+    color: #072;
+}
+
+pre {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}

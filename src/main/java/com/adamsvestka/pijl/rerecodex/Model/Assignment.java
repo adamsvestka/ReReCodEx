@@ -12,6 +12,8 @@ public class Assignment extends Observable<Assignment> {
     public UUID id;
     public String name;
     public String body;
+    public int points;
+    public int bonusPoints;
     public List<Deadline> deadlines;
     public List<String> runtimeEnvironments;
 
@@ -34,6 +36,13 @@ public class Assignment extends Observable<Assignment> {
         if (assignment.allowSecondDeadline) {
             deadlines.add(new Deadline(assignment.secondDeadline, assignment.maxPointsBeforeSecondDeadline));
         }
+
+        notifySubscribers();
+    }
+
+    public void load(cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.Payload.Assignment assignment) {
+        points = (int) assignment.points.gained;
+        bonusPoints = (int) assignment.points.bonus;
 
         notifySubscribers();
     }

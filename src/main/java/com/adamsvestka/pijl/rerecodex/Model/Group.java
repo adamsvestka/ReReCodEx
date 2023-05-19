@@ -28,6 +28,7 @@ public class Group extends Observable<Group> {
         ReCodEx.getAssignments(id)
                 .thenApply(e -> e.stream().map(Assignment::build).toList())
                 .thenAccept(assignments::addAll)
+                .thenRun(this::loadStats)
                 .exceptionally(e -> {
                     e.printStackTrace();
                     return null;
@@ -40,5 +41,19 @@ public class Group extends Observable<Group> {
         Group g = new Group();
         g.load(group);
         return g;
+    }
+
+    private void loadStats() {
+        ReCodEx.getStats(id)
+                .thenAccept(stats -> {
+                    assignments.forEach(assignment -> {
+                        stats.get(0).assignments.stream()
+                                .filter(s -> s.id.equals(assignment.id))
+                                .findFirst().ifPresent(assignment::load);
+                    });
+                }).exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
     }
 }

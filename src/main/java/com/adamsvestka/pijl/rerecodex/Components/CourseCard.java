@@ -78,7 +78,6 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
         arrowLabel = new JLabel("+");
 
         fullNameLabel.setFont(getFont().deriveFont(16f));
-        fullNameLabel.setForeground(ColorPalette.dark_gray);
         teachersLabel.setFont(getFont().deriveFont(12f));
         teachersLabel.setForeground(ColorPalette.dark_gray2);
         arrowLabel.setFont(getFont().deriveFont(24f));
@@ -94,6 +93,7 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
 
         assignments = course.assignments.stream().map(AssignmentCard::new).toList();
 
+        container.add(new AssignmentHeader());
         assignments.forEach(container::add);
     }
 
@@ -113,7 +113,7 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
     }
 
     private int getExtraHeight() {
-        return isExpanded ? assignments.size() * AssignmentCard.height : 0;
+        return isExpanded ? assignments.size() * AssignmentCard.height + AssignmentHeader.height : 0;
     }
 
     @Override

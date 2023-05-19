@@ -47,6 +47,11 @@
 			<version>1.9.3</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<version>0.21.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

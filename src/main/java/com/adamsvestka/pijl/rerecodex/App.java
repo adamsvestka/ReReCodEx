@@ -22,12 +22,13 @@ public class App extends JFrame {
 
     public App() {
         super("ReReCodEx");
+        instance = this;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
 
         mainarea = new JPanel();
-        sidebar = new Sidebar<>(this::navigate);
+        sidebar = new Sidebar<>(App::navigate);
 
         mainarea.setBackground(ColorPalette.light_gray2);
         mainarea.setLayout(new GridBagLayout());
@@ -44,15 +45,18 @@ public class App extends JFrame {
         setVisible(true);
     }
 
-    private void navigate(JPanel panel) {
-        mainarea.removeAll();
+    private static App instance;
+
+    public static void navigate(JPanel panel) {
+        instance.sidebar.deselectButtons();
+        instance.mainarea.removeAll();
         var c = new GridBagConstraints();
         c.fill = panel.getClass() == LoginPanel.class ? GridBagConstraints.NONE : GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 1;
-        mainarea.add(panel, c);
-        mainarea.revalidate();
-        mainarea.repaint();
+        instance.mainarea.add(panel, c);
+        instance.mainarea.revalidate();
+        instance.mainarea.repaint();
     }
 
     private void update(User user) {
