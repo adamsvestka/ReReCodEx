@@ -1,10 +1,11 @@
-package cz.cuni.mff.recodex.api.v1.login;
+package cz.cuni.mff.recodex.api.v1.login.cas_uk;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class cas_uk {
+public class Response {
     public boolean success;
     public long code;
     public Payload payload;
@@ -15,7 +16,7 @@ public class cas_uk {
         public Error error;
 
         public static class User {
-            public String id;
+            public UUID id;
             public String fullName;
             public Name name;
             public String avatarUrl;
@@ -33,17 +34,17 @@ public class cas_uk {
                 public String email;
                 public long createdAt;
                 public long lastAuthenticationAt;
-                public List<String> instancesIds;
+                public List<UUID> instancesIds;
                 public String role;
                 public boolean emptyLocalPassword;
                 public boolean isLocal;
                 public boolean isExternal;
                 public boolean isAllowed;
-                public ExternalIDS externalIds;
+                public ExternalIds externalIds;
                 public UIData uiData;
                 public Settings settings;
 
-                public static class ExternalIDS {
+                public static class ExternalIds {
                     @JsonProperty("cas-uk")
                     public String casUk;
                 }

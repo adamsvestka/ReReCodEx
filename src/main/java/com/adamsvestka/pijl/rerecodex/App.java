@@ -2,6 +2,7 @@ package com.adamsvestka.pijl.rerecodex;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
@@ -9,9 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.adamsvestka.pijl.rerecodex.Components.Sidebar;
+import com.adamsvestka.pijl.rerecodex.Model.Group;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.Model.User;
-import com.adamsvestka.pijl.rerecodex.Panels.DashboardPanel;
+import com.adamsvestka.pijl.rerecodex.Panels.CoursePanel;
 import com.adamsvestka.pijl.rerecodex.Panels.LoginPanel;
 
 public class App extends JFrame {
@@ -44,7 +46,11 @@ public class App extends JFrame {
 
     private void navigate(JPanel panel) {
         mainarea.removeAll();
-        mainarea.add(panel);
+        var c = new GridBagConstraints();
+        c.fill = panel.getClass() == LoginPanel.class ? GridBagConstraints.NONE : GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        mainarea.add(panel, c);
         mainarea.revalidate();
         mainarea.repaint();
     }
@@ -52,12 +58,22 @@ public class App extends JFrame {
     private void update(User user) {
         sidebar.clearButtons();
 
-        if (user.id == null) {
+        if (!user.isLoggedIn()) {
             sidebar.addButton("􀻶 Login", new LoginPanel());
         } else {
-            sidebar.addButton("􀍾 Dashboard", new DashboardPanel());
-            sidebar.addButton("􀈕 Homeworks", new JPanel());
+            sidebar.addButton("􀍾 Courses", new CoursePanel());
+            sidebar.addButton("􀈕 Assignments", new JPanel());
             sidebar.addButton("􀁜 Help", new JPanel());
+
+            var mffInstanceId = user.instances.get(0);
+            ReCodEx.getInstances(user.id)
+                    .thenAcceptBoth(ReCodEx.getGroups(false, mffInstanceId), (instances, groups) -> {
+                        Model.getInstance().groups.clear();
+                        Model.getInstance().groups.addAll(groups.payload.stream().map(Group::build).toList());
+                    }).exceptionally(e -> {
+                        e.printStackTrace();
+                        return null;
+                    });
         }
     }
 

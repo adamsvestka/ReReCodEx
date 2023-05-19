@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
@@ -13,22 +12,59 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.swing.SwingWorker;
 
 import cz.cuni.mff.recodex.api.v1.ReCodExApiMapper;
 
 public class ReCodEx {
-    public static cz.cuni.mff.recodex.api.v1.login.cas_uk authenticate(String username, String password) {
-        HttpClient client = HttpClient.newBuilder()
-                .followRedirects(Redirect.NEVER)
-                .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
-                .build();
+    private static String accessToken;
 
-        HttpRequest request;
-        HttpResponse<String> response;
-        try {
-            URI casUri = new URI("https://idp.cuni.cz/cas/login?service=https://recodex.mff.cuni.cz/cas-auth-ext/");
+    @FunctionalInterface
+    private static interface ThrowingCallable<T> {
+        T call() throws IOException, InterruptedException;
+    }
+
+    private static <T> CompletableFuture<T> runInBackground(ThrowingCallable<T> callable) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        SwingWorker<T, Void> worker = new SwingWorker<>() {
+            @Override
+            protected T doInBackground() throws Exception {
+                return callable.call();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    future.complete(get());
+                } catch (ExecutionException e) {
+                    future.completeExceptionally(e.getCause());
+                } catch (InterruptedException e) {
+                    future.completeExceptionally(e);
+                }
+            }
+        };
+        worker.execute();
+        return future;
+    }
+
+    public static CompletableFuture<cz.cuni.mff.recodex.api.v1.login.cas_uk.Response> authenticate(String username,
+            String password) {
+        return runInBackground(() -> {
+            HttpClient client = HttpClient.newBuilder()
+                    .followRedirects(Redirect.NEVER)
+                    .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
+                    .build();
+
+            HttpRequest request;
+            HttpResponse<String> response;
+
+            URI casUri = URI.create("https://idp.cuni.cz/cas/login?service=https://recodex.mff.cuni.cz/cas-auth-ext/");
 
             // ===== GET https://recodex.mff.cuni.cz/login =====
             request = HttpRequest.newBuilder()
@@ -60,7 +96,7 @@ public class ReCodEx {
 
             URI redirectUri = null;
             while (response.statusCode() >= 300 && response.statusCode() < 400) {
-                redirectUri = new URI(response.headers().firstValue("Location").orElseThrow());
+                redirectUri = URI.create(response.headers().firstValue("Location").orElseThrow());
                 if (redirectUri.getPath() == "/login-extern/cas-uk")
                     break;
                 request = HttpRequest.newBuilder()
@@ -77,20 +113,52 @@ public class ReCodEx {
 
             // ===== POST https://recodex.mff.cuni.cz/api/v1/login/cas-uk =====
             request = HttpRequest.newBuilder()
-                    .uri(new URI("https://recodex.mff.cuni.cz/api/v1/login/cas-uk"))
+                    .uri(URI.create("https://recodex.mff.cuni.cz/api/v1/login/cas-uk"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(String.format("{\"token\":\"%s\"}",
                             URLEncoder.encode(params.get("token"), "UTF-8"))))
                     .build();
             response = client.send(request, BodyHandlers.ofString());
 
-            return ReCodExApiMapper.getInstance().readValue(response.body(), cz.cuni.mff.recodex.api.v1.login.cas_uk.class);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("INTERNAL: Invalid URI syntax: " + e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException("INTERNAL: I/O error: " + e.getMessage());
-        } catch (InterruptedException e) {
-            throw new RuntimeException("INTERNAL: Interrupted: " + e.getMessage());
-        }
+            var json = ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.login.cas_uk.Response.class);
+
+            accessToken = json.payload.accessToken;
+
+            return json;
+        });
+    }
+
+    public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.instances.Response> getInstances(UUID userId) {
+        return runInBackground(() -> {
+            // ===== GET https://recodex.mff.cuni.cz/api/v1/user/[id]/instances =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/users/%s/instances",
+                            URLEncoder.encode(userId.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.users.$id.instances.Response.class);
+        });
+    }
+
+    public static CompletableFuture<cz.cuni.mff.recodex.api.v1.groups.Response> getGroups(boolean ancestors,
+            UUID instanceId) {
+        return runInBackground(() -> {
+            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(
+                            String.format("https://recodex.mff.cuni.cz/api/v1/groups?ancestors=%s&instanceId=%s",
+                                    URLEncoder.encode(ancestors ? "1" : "0", "UTF-8"),
+                                    URLEncoder.encode(instanceId.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.groups.Response.class);
+        });
     }
 }

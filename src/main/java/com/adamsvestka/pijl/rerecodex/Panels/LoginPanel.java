@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,7 +13,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingWorker;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.LocalStorage;
@@ -25,8 +23,6 @@ import com.adamsvestka.pijl.rerecodex.Components.PasswordField;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
-
-import cz.cuni.mff.recodex.api.v1.login.cas_uk;
 
 public class LoginPanel extends JPanel implements KeyListener {
     private JTextField usernameField;
@@ -74,19 +70,10 @@ public class LoginPanel extends JPanel implements KeyListener {
         var passwordLabel = new JLabel("Password:");
         passwordField = new PasswordField();
         rememberMeCheckbox = new JCheckBox("Remember me");
-        loginButton = new Button("Login", e -> {
+        loginButton = new Button("Login", event -> {
             setState(State.loading);
-            new SwingWorker<cas_uk, Void>() {
-                @Override
-                protected cas_uk doInBackground() throws Exception {
-                    return ReCodEx.authenticate(usernameField.getText(), passwordField.getText());
-                }
-
-                @Override
-                protected void done() {
-                    try {
-                        var user = get();
-
+            ReCodEx.authenticate(usernameField.getText(), passwordField.getText())
+                    .thenAccept(user -> {
                         Model.getInstance().accessToken = user.payload.accessToken;
                         Model.getInstance().user.load(user.payload);
 
@@ -96,17 +83,18 @@ public class LoginPanel extends JPanel implements KeyListener {
                             LocalStorage.set("username", usernameField.getText());
                             LocalStorage.set("password", passwordField.getText(), true);
                         }
-                    } catch (InterruptedException | ExecutionException e) {
+                    }).exceptionally(e -> {
                         setState(LoginPanel.State.error);
                         System.out.println("Login failed!");
-                    }
-                }
-            }.execute();
+                        return null;
+                    });
         });
         errorLabel = new JLabel("Login failed!");
 
         usernameField.addKeyListener(this);
         passwordField.addKeyListener(this);
+        rememberMeCheckbox.addKeyListener(this);
+        loginButton.addKeyListener(this);
         errorLabel.setForeground(Color.red);
 
         add(titleLabel);
