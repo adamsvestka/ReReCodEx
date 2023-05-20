@@ -86,6 +86,8 @@ public class ObservableList<T> extends ArrayList<T> {
      * state by executing them with an instance of the updated observable. This
      * method should be called within the observable class whenever its state is
      * updated.
+     * 
+     * @param added The elements that were added to the observable's state.
      */
     public void notifyAddSubscribers(List<T> added) {
         for (var subscriber : addSubscribers) {
@@ -98,6 +100,8 @@ public class ObservableList<T> extends ArrayList<T> {
      * state by executing them with an instance of the updated observable. This
      * method should be called within the observable class whenever its state is
      * updated.
+     * 
+     * @param removed The elements that were removed from the observable's state.
      */
     public void notifyRemoveSubscribers(List<T> removed) {
         for (var subscriber : removeSubscribers) {
@@ -105,7 +109,7 @@ public class ObservableList<T> extends ArrayList<T> {
         }
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public T set(int index, T element) {
         notifyRemoveSubscribers(List.of(get(index)));
@@ -115,7 +119,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public boolean add(T element) {
         boolean result = super.add(element);
@@ -124,7 +128,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public void add(int index, T element) {
         super.add(index, element);
@@ -132,7 +136,7 @@ public class ObservableList<T> extends ArrayList<T> {
         notifySubscribers();
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public T remove(int index) {
         notifyRemoveSubscribers(List.of(get(index)));
@@ -141,7 +145,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     @SuppressWarnings("unchecked")
     public boolean remove(Object element) {
@@ -151,7 +155,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public void clear() {
         notifyRemoveSubscribers(Collections.unmodifiableList(this));
@@ -159,7 +163,7 @@ public class ObservableList<T> extends ArrayList<T> {
         notifySubscribers();
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public boolean addAll(Collection<? extends T> c) {
         boolean result = super.addAll(c);
@@ -168,7 +172,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
         boolean result = super.addAll(index, c);
@@ -177,7 +181,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     protected void removeRange(int fromIndex, int toIndex) {
         notifyRemoveSubscribers(subList(fromIndex, toIndex));
@@ -185,7 +189,7 @@ public class ObservableList<T> extends ArrayList<T> {
         notifySubscribers();
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     @SuppressWarnings("unchecked")
     public boolean removeAll(Collection<?> c) {
@@ -195,7 +199,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public boolean retainAll(Collection<?> c) {
         notifyRemoveSubscribers(stream().filter(e -> !c.contains(e)).toList());
@@ -204,7 +208,7 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public boolean removeIf(Predicate<? super T> filter) {
         notifyRemoveSubscribers(stream().filter(filter).toList());
@@ -213,14 +217,14 @@ public class ObservableList<T> extends ArrayList<T> {
         return result;
     }
 
-    /** @apiNote This implementation notifies subscribers of the change. */
+    /** This implementation notifies subscribers of the change. */
     @Override
     public void sort(Comparator<? super T> c) {
         super.sort(c);
         notifySubscribers();
     }
 
-    /** @apiNote This implementation returns an unmodifiable list. */
+    /** This implementation returns an unmodifiable list. */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return Collections.unmodifiableList(super.subList(fromIndex, toIndex));

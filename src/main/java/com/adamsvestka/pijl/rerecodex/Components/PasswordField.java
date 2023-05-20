@@ -18,7 +18,7 @@ import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBorder;
  * Insets for padding within the input field to provide an appealing input
  * component in the UI.
  * 
- * @see JTextField
+ * @see JPasswordField
  * @see FocusListener
  */
 public class PasswordField extends JPasswordField implements FocusListener {

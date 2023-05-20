@@ -73,12 +73,13 @@ public class ReCodEx {
     /**
      * Authenticates the user with the given credentials and returns a
      * CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * kinda hacky
      * 
      * @param username The username.
      * @param password The password.
      * @return A CompletableFuture that can be used to retrieve the result.
      * 
-     * @apiNote kinda hacky
      */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.login.cas_uk.Response> authenticate(String username,
             String password) {
@@ -159,11 +160,11 @@ public class ReCodEx {
     /**
      * Retrieves the list of instances the user has access to and returns a
      * CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * GET https://recodex.mff.cuni.cz/api/v1/user/{userId}/instances
      * 
      * @param userId The user's ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/user/{userId}/instances
      */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.instances.Response> getInstances(UUID userId) {
         return runInBackground(() -> {
@@ -182,13 +183,13 @@ public class ReCodEx {
     /**
      * Retrieves the list of groups the user is a member of and returns a
      * CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * GET
+     * https://recodex.mff.cuni.cz/api/v1/groups
      * 
      * @param ancestors  Whether to include ancestor groups.
      * @param instanceId The instance ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET
-     *          https://recodex.mff.cuni.cz/api/v1/groups?ancestors={ancestors}&instanceId={instanceId}
      */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.groups.Response> getGroups(boolean ancestors,
             UUID instanceId) {
@@ -210,11 +211,11 @@ public class ReCodEx {
     /**
      * Get details about the user with the given ID and returns a CompletableFuture
      * that can be used to retrieve the result.
+     * <p>
+     * GET https://recodex.mff.cuni.cz/api/v1/users/{userId}
      * 
      * @param userId The user's ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/users/{userId}
      */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.Response.Payload> getUser(UUID userId) {
         return runInBackground(() -> {
@@ -233,11 +234,11 @@ public class ReCodEx {
     /**
      * Retrieves the list of assignments for the given group and returns a
      * CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * GET https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/assignments
      * 
      * @param groupId The group's ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/assignments
      */
     public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.assignments.Response.Payload>> getAssignments(
             UUID groupId) {
@@ -257,12 +258,11 @@ public class ReCodEx {
     /**
      * Retrieves statistics about assignments in a given group and returns a
      * CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * GET https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/students/stats
      * 
      * @param groupId The group's ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET
-     *          https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/students/stats
      */
     public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.Payload>> getStats(
             UUID groupId) {
@@ -280,14 +280,14 @@ public class ReCodEx {
     }
 
     /**
-     * Retrieves the list of submissions for the given assignment and returns a
-     * CompletableFuture that can be used to retrieve the result.
+     * Retrieves the list of submissions for assignments in a given group and
+     * returns a CompletableFuture that can be used to retrieve the result.
+     * <p>
+     * GET
+     * https://recodex.mff.cuni.cz/api/v1/exercise-assignments/{groupId}/can-submit
      * 
-     * @param assignmentId The assignment's ID.
+     * @param groupId The group's ID.
      * @return A CompletableFuture that can be used to retrieve the result.
-     * 
-     * @apiNote GET
-     *          https://recodex.mff.cuni.cz/api/v1/exercise-assignments/{groupId}/can-submit
      */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.exercise_assignments.$id.can_submit.Response.Payload> getCanSubmit(
             UUID groupId) {
