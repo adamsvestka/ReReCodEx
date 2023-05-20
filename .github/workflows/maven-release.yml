@@ -6,7 +6,7 @@ on:
       releaseName:
         description: 'Release name'
         required: true
-        default: 'Release ${{ github.sha }}'
+        default: 'Release'
 
 jobs:
   build:
