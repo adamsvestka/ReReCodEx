@@ -39,6 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ steps.artifact_info.outputs.version }}
           release_name: ${{ github.event.inputs.releaseName }}
           draft: false
           prerelease: false
