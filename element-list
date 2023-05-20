@@ -1,0 +1,13 @@
+com.adamsvestka.pijl.rerecodex
+com.adamsvestka.pijl.rerecodex.Components
+com.adamsvestka.pijl.rerecodex.Model
+com.adamsvestka.pijl.rerecodex.Panels
+com.adamsvestka.pijl.rerecodex.SwingExtensions
+cz.cuni.mff.recodex.api.v1
+cz.cuni.mff.recodex.api.v1.exercise_assignments.$id.can_submit
+cz.cuni.mff.recodex.api.v1.groups
+cz.cuni.mff.recodex.api.v1.groups.$id.assignments
+cz.cuni.mff.recodex.api.v1.groups.$id.students.stats
+cz.cuni.mff.recodex.api.v1.login.cas_uk
+cz.cuni.mff.recodex.api.v1.users.$id
+cz.cuni.mff.recodex.api.v1.users.$id.instances
