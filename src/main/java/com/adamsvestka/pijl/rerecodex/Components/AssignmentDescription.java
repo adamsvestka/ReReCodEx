@@ -20,15 +20,14 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.Model.Assignment;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
+import com.adamsvestka.pijl.rerecodex.SwingExtensions.CustomHTMLEditorKit;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.VerticalScrollPanel;
-import com.adamsvestka.pijl.rerecodex.SwingExtensions.CustomHTMLEditorKit;
 
-public class AssignmentBody extends VerticalScrollPanel implements HyperlinkListener {
-    private JLabel nameLabel;
+public class AssignmentDescription extends VerticalScrollPanel implements HyperlinkListener {
     private JEditorPane bodyPane;
 
-    public AssignmentBody() {
+    public AssignmentDescription() {
         super();
 
         setBackground(ColorPalette.white);
@@ -43,7 +42,7 @@ public class AssignmentBody extends VerticalScrollPanel implements HyperlinkList
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
 
-        nameLabel = new JLabel();
+        var titleLabel = new JLabel("Assignment description");
         bodyPane = new JEditorPane() {
             @Override
             public boolean getScrollableTracksViewportWidth() {
@@ -51,8 +50,8 @@ public class AssignmentBody extends VerticalScrollPanel implements HyperlinkList
             }
         };
 
-        nameLabel.setFont(nameLabel.getFont().deriveFont(20f));
-        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        titleLabel.setFont(titleLabel.getFont().deriveFont(20f));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         bodyPane.setContentType("text/html");
         bodyPane.setEditorKit(new CustomHTMLEditorKit());
@@ -60,17 +59,15 @@ public class AssignmentBody extends VerticalScrollPanel implements HyperlinkList
         bodyPane.setOpaque(false);
         bodyPane.setFont(bodyPane.getFont());
         bodyPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-        bodyPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        bodyPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         bodyPane.addHyperlinkListener(this);
 
-        add(nameLabel);
+        add(titleLabel);
         add(bodyPane);
     }
 
     public void update(Assignment assignment) {
-        nameLabel.setText(assignment.name);
-
         Parser parser = Parser.builder().build();
         Node document = parser.parse(assignment.body);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
@@ -84,7 +81,7 @@ public class AssignmentBody extends VerticalScrollPanel implements HyperlinkList
         super.paint(g);
 
         g.setColor(ColorPalette.light_gray);
-        g.drawLine(getInsets().left, 51, getWidth() - getInsets().right, 51);
+        g.drawLine(getInsets().left, 46, getWidth() - getInsets().right, 46);
     }
 
     @Override

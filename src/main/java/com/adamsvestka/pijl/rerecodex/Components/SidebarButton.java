@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
@@ -19,11 +25,23 @@ public class SidebarButton extends JButton implements MouseListener {
     private static final Color color_foreground_hover = ColorPalette.white;
     private static final Color color_background_active = ColorPalette.green2;
     private static final Color color_foreground_active = ColorPalette.white;
+    private static final int image_size = 20;
 
     private boolean active = false;
 
-    public SidebarButton(String text, ActionListener onClick) {
+    public SidebarButton(String iconUrl, String text, ActionListener onClick) {
         super(text);
+
+        // if (iconUrl != null) {
+        //     try {
+        //         InputStream url = getClass().getResourceAsStream(iconUrl);
+        //         Image image = ImageIO.read(url).getScaledInstance(image_size, image_size, BufferedImage.SCALE_SMOOTH);
+        //         ImageIcon icon = new ImageIcon(image);
+        //         setIcon(icon);
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     }
+        // }
 
         setBackground(color_background);
         setForeground(color_foreground);

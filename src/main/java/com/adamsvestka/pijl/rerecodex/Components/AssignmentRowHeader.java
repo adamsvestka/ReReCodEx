@@ -12,15 +12,15 @@ import javax.swing.SwingConstants;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
-public class AssignmentHeader extends JPanel {
-    public static final int height = AssignmentCard.height;
+public class AssignmentRowHeader extends JPanel {
+    public static final int height = AssignmentRow.height;
 
     private JLabel name;
     private JLabel points;
     private JLabel maxPoints;
     private JLabel deadline;
 
-    public AssignmentHeader() {
+    public AssignmentRowHeader() {
         super();
 
         setOpaque(false);

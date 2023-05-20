@@ -209,4 +209,23 @@ public class ReCodEx {
                     cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.class).payload;
         });
     }
+
+    public static CompletableFuture<cz.cuni.mff.recodex.api.v1.exercise_assignments.$id.can_submit.Response.Payload> getCanSubmit(
+            UUID id) {
+        return runInBackground(() -> {
+            // =====
+            // GET https://recodex.mff.cuni.cz/api/v1/exercise-assignments/[id]/can-submit
+            // =====
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(
+                            String.format("https://recodex.mff.cuni.cz/api/v1/exercise-assignments/%s/can-submit",
+                                    URLEncoder.encode(id.toString(), "UTF-8"))))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+
+            return ReCodExApiMapper.getInstance().readValue(response.body(),
+                    cz.cuni.mff.recodex.api.v1.exercise_assignments.$id.can_submit.Response.class).payload;
+        });
+    }
 }

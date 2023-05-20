@@ -16,14 +16,14 @@ public class Group extends Observable<Group> {
     public List<User> primaryAdmins = new ObservableList<>();
     public ObservableList<Assignment> assignments = new ObservableList<>();
 
-    public void load(cz.cuni.mff.recodex.api.v1.groups.Response.Payload group) {
-        id = group.id;
-        externalId = group.externalId;
-        name = Model.getLocalizedText(group.localizedTexts, Locale.en).name;
-        description = Model.getLocalizedText(group.localizedTexts, Locale.en).description;
-        students = group.privateData.students;
+    public void load(cz.cuni.mff.recodex.api.v1.groups.Response.Payload payload) {
+        id = payload.id;
+        externalId = payload.externalId;
+        name = Model.getLocalizedText(payload.localizedTexts, Locale.en).name;
+        description = Model.getLocalizedText(payload.localizedTexts, Locale.en).description;
+        students = payload.privateData.students;
         primaryAdmins.clear();
-        primaryAdmins.addAll(group.primaryAdminsIds.stream().map(User::new).toList());
+        primaryAdmins.addAll(payload.primaryAdminsIds.stream().map(User::new).toList());
         assignments.clear();
         ReCodEx.getAssignments(id)
                 .thenApply(e -> e.stream().map(Assignment::build).toList())
@@ -37,9 +37,9 @@ public class Group extends Observable<Group> {
         notifySubscribers();
     }
 
-    public static Group build(cz.cuni.mff.recodex.api.v1.groups.Response.Payload group) {
+    public static Group build(cz.cuni.mff.recodex.api.v1.groups.Response.Payload payload) {
         Group g = new Group();
-        g.load(group);
+        g.load(payload);
         return g;
     }
 

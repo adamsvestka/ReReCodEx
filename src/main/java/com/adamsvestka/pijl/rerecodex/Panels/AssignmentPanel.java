@@ -1,18 +1,23 @@
 package com.adamsvestka.pijl.rerecodex.Panels;
 
+import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.adamsvestka.pijl.rerecodex.Components.AssignmentBody;
+import com.adamsvestka.pijl.rerecodex.Components.AssignmentDescription;
+import com.adamsvestka.pijl.rerecodex.Components.AssignmentStatus;
 import com.adamsvestka.pijl.rerecodex.Model.Assignment;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.VerticalScrollPanel;
 
 public class AssignmentPanel extends JPanel {
     private JPanel container;
     private JScrollPane scrollPane;
-    private AssignmentBody body;
+    private AssignmentStatus status;
+    private AssignmentDescription body;
 
     public AssignmentPanel(Assignment assignment) {
         super();
@@ -45,12 +50,16 @@ public class AssignmentPanel extends JPanel {
 
         add(scrollPane);
 
-        body = new AssignmentBody();
+        status = new AssignmentStatus();
+        body = new AssignmentDescription();
 
+        container.add(status);
+        container.add(Box.createRigidArea(new Dimension(0, 20)));
         container.add(body);
     }
 
     public void update(Assignment assignment) {
+        status.update(assignment);
         body.update(assignment);
     }
 }

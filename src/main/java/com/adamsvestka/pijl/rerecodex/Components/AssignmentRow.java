@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.format.DateTimeFormatter;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,7 +17,7 @@ import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.Model.Assignment;
 import com.adamsvestka.pijl.rerecodex.Panels.AssignmentPanel;
 
-public class AssignmentCard extends JPanel implements MouseListener {
+public class AssignmentRow extends JPanel implements MouseListener {
     public static final int height = 40;
 
     private JLabel name;
@@ -28,7 +27,7 @@ public class AssignmentCard extends JPanel implements MouseListener {
 
     private AssignmentPanel assignmentPanel;
 
-    public AssignmentCard(Assignment assignment) {
+    public AssignmentRow(Assignment assignment) {
         super();
 
         assignmentPanel = new AssignmentPanel(assignment);
@@ -81,8 +80,7 @@ public class AssignmentCard extends JPanel implements MouseListener {
         }
         points.setText(sb.toString());
         maxPoints.setText(Integer.toString(assignment.deadlines.get(0).points));
-        deadline.setText(
-                DateTimeFormatter.ofPattern("dd. MM. yyyy  HH:mm").format(assignment.deadlines.get(0).time));
+        deadline.setText(App.dateTimeFormatter.format(assignment.deadlines.get(0).time));
     }
 
     @Override

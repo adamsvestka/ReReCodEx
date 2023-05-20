@@ -27,7 +27,7 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
     private JLabel teachersLabel;
     private JLabel arrowLabel;
     private JPanel container;
-    private List<AssignmentCard> assignments;
+    private List<AssignmentRow> assignments;
 
     private Group course;
     private boolean isExpanded = false;
@@ -91,9 +91,9 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
         teachersLabel.setBounds(30, 35, 500, 20);
         arrowLabel.setBounds(header.getWidth() - 30, 15, 20, 20);
 
-        assignments = course.assignments.stream().map(AssignmentCard::new).toList();
+        assignments = course.assignments.stream().map(AssignmentRow::new).toList();
 
-        container.add(new AssignmentHeader());
+        container.add(new AssignmentRowHeader());
         assignments.forEach(container::add);
     }
 
@@ -105,7 +105,7 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
         this.assignments.forEach(container::remove);
         this.assignments = assignments.stream()
                 .sorted((a, b) -> b.deadlines.get(0).time.compareTo(a.deadlines.get(0).time))
-                .map(AssignmentCard::new).toList();
+                .map(AssignmentRow::new).toList();
         this.assignments.forEach(container::add);
 
         revalidate();
@@ -113,7 +113,7 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
     }
 
     private int getExtraHeight() {
-        return isExpanded ? assignments.size() * AssignmentCard.height + AssignmentHeader.height : 0;
+        return isExpanded ? assignments.size() * AssignmentRow.height + AssignmentRowHeader.height : 0;
     }
 
     @Override

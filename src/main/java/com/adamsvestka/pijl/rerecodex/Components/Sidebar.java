@@ -71,8 +71,8 @@ public class Sidebar<T> extends JPanel {
             entry.getKey().setActive(false);
     }
 
-    public void addButton(String text, T value) {
-        var button = new SidebarButton(text, e -> {
+    public void addButton(String icon, String text, T value) {
+        var button = new SidebarButton(icon, text, e -> {
             var source = (SidebarButton) e.getSource();
             if (source.getActive())
                 return;
