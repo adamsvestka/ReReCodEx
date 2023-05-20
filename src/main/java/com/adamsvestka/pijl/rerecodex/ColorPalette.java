@@ -2,6 +2,10 @@ package com.adamsvestka.pijl.rerecodex;
 
 import java.awt.Color;
 
+/**
+ * A class that contains colors used in the application. Taken from
+ * the original app at https://recodex.mff.cuni.cz
+ */
 public class ColorPalette {
     public static final Color white = Color.decode("#ffffff");
     public static final Color light_gray2 = Color.decode("#f4f6f9");

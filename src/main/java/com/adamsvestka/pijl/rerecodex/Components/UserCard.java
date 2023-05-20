@@ -20,12 +20,31 @@ import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.Model.User;
 
+/**
+ * UserCard is a custom JPanel component that displays the User's details, such
+ * as their username and avatar image. It also contains a logout button for the
+ * user to log out of their account. The component is designed to be displayed
+ * in the application's user interface and automatically updates its contents
+ * whenever the user's information changes. The class makes use of the Singleton
+ * Model object to obtain the latest information about the User and updates
+ * itself by subscribing to changes in the User object. The background color of
+ * the component and various other stylistic aspects are also defined within
+ * this class.
+ * 
+ * @see Model
+ * @see User
+ */
 public class UserCard extends JPanel {
     private static final Color color_background = ColorPalette.dark_gray;
     private static final int image_size = 32;
 
     private JLabel usernameLabel;
 
+    /**
+     * Constructs a new UserCard component. The component is initialized with the
+     * latest information about the User and automatically updates itself whenever
+     * the User object changes.
+     */
     public UserCard() {
         super();
 

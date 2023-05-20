@@ -12,7 +12,19 @@ import javax.swing.SwingConstants;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
+/**
+ * AssignmentRowHeader represents the header row for a table listing
+ * assignments. This custom JPanel displays the assignment's name, points, max
+ * points, and deadline column headers.
+ * 
+ * @see AssignmentRow
+ */
 public class AssignmentRowHeader extends JPanel {
+    /**
+     * The height of the component.
+     * 
+     * @see AssignmentRow#height
+     */
     public static final int height = AssignmentRow.height;
 
     private JLabel name;
@@ -20,6 +32,10 @@ public class AssignmentRowHeader extends JPanel {
     private JLabel maxPoints;
     private JLabel deadline;
 
+    /**
+     * Constructs a new AssignmentRowHeader component. The component displays the
+     * assignment's name, points, max points, and deadline column headers.
+     */
     public AssignmentRowHeader() {
         super();
 

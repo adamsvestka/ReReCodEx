@@ -10,6 +10,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.border.Border;
 
+/**
+ * A border that adds a shadow effect to a component. Note that This border
+ * paints inwards meaning it reduces the size of the component.
+ * 
+ * @see javax.swing.JComponent#getInsets() JComponent.getInsets()
+ */
 public class BoxShadow implements Border {
     private int blur;
     private int spread2;
@@ -20,6 +26,16 @@ public class BoxShadow implements Border {
 
     private int left, top, leftright, topbottom;
 
+    /**
+     * Constructs a new BoxShadow with the given shadow parameters.
+     * 
+     * @param offsetX      The horizontal offset of the shadow.
+     * @param offsetY      The vertical offset of the shadow.
+     * @param blur         The blur radius of the shadow effect.
+     * @param spread       The spread radius of the shadow effect.
+     * @param shadowColor  The color of the shadow.
+     * @param cornerRadius The corner radius of the shadow.
+     */
     public BoxShadow(int offsetX, int offsetY, int blur, int spread, Color shadowColor, int cornerRadius) {
         this.blur = blur;
         this.shadowColor = new Color(shadowColor.getRed(), shadowColor.getGreen(),
@@ -62,10 +78,20 @@ public class BoxShadow implements Border {
         return true;
     }
 
+    /**
+     * Sets the visibility of the shadow effect.
+     * 
+     * @param visible Whether the shadow effect should be visible or not.
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
+    /**
+     * Returns the current visibility of the shadow effect.
+     * 
+     * @return Whether the shadow effect is currently visible or not.
+     */
     public boolean isVisible() {
         return visible;
     }

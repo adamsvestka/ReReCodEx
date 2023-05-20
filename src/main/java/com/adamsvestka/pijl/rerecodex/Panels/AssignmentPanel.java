@@ -13,12 +13,28 @@ import com.adamsvestka.pijl.rerecodex.Components.AssignmentStatus;
 import com.adamsvestka.pijl.rerecodex.Model.Assignment;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.VerticalScrollPanel;
 
+/**
+ * AssignmentPanel is a custom JPanel that displays an Assignment's details in a
+ * vertically scrollable view. It consists of a status component, representing
+ * the Assignment's status, and a description component, displaying the
+ * Assignment's body. The panel subscribes to the Assignment model and updates
+ * the UI components whenever there's a change in the Assignment data.
+ * 
+ * @see Assignment
+ */
 public class AssignmentPanel extends JPanel {
     private JPanel container;
     private JScrollPane scrollPane;
     private AssignmentStatus status;
     private AssignmentDescription body;
 
+    /**
+     * Constructs a new AssignmentPanel with the given Assignment. The panel
+     * subscribes to the Assignment model and updates the UI components whenever
+     * there's a change in the Assignment data.
+     * 
+     * @param assignment The Assignment to display.
+     */
     public AssignmentPanel(Assignment assignment) {
         super();
 
@@ -58,7 +74,7 @@ public class AssignmentPanel extends JPanel {
         container.add(body);
     }
 
-    public void update(Assignment assignment) {
+    private void update(Assignment assignment) {
         status.update(assignment);
         body.update(assignment);
     }

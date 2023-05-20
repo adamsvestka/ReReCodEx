@@ -19,12 +19,22 @@ import com.adamsvestka.pijl.rerecodex.Model.User;
 import com.adamsvestka.pijl.rerecodex.Panels.CoursePanel;
 import com.adamsvestka.pijl.rerecodex.Panels.LoginPanel;
 
+/**
+ * Main application class. Contains the main method and the main window.
+ */
 public class App extends JFrame {
     private JPanel mainarea = new JPanel();
     private Sidebar<JPanel> sidebar;
 
+    /** Date and time formatter used in the application. */
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd. MM. yyyy  HH:mm");
 
+    /**
+     * Convert a number of bytes to a human-readable string.
+     *
+     * @param bytes The number of bytes.
+     * @return A human-readable string representing the number of bytes.
+     */
     public static String bytesToHumanReadable(long bytes) {
         long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
         if (absB < 1024) {
@@ -40,6 +50,9 @@ public class App extends JFrame {
         return String.format("%.1f %ciB", value / 1024.0, ci.current());
     }
 
+    /**
+     * Create the main window.
+     */
     public App() {
         super("ReReCodEx");
         instance = this;
@@ -67,6 +80,11 @@ public class App extends JFrame {
 
     private static App instance;
 
+    /**
+     * Navigate to a panel.
+     *
+     * @param panel The panel to navigate to.
+     */
     public static void navigate(JPanel panel) {
         instance.sidebar.deselectButtons();
         instance.mainarea.removeAll();
@@ -101,6 +119,11 @@ public class App extends JFrame {
         }
     }
 
+    /**
+     * Main method.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::new);
     }

@@ -23,14 +23,30 @@ import javax.swing.SwingWorker;
 
 import cz.cuni.mff.recodex.api.v1.ReCodExApiMapper;
 
+/**
+ * A class that contains methods for communicating with the ReCodEx API.
+ * Methods return {@link java.util.concurrent.CompletableFuture
+ * CompletableFutures} that can be used to asynchronously retrieve the results.
+ */
 public class ReCodEx {
     private static String accessToken;
 
+    /**
+     * A utility interface for running code in the background.
+     */
     @FunctionalInterface
     private static interface ThrowingCallable<T> {
         T call() throws IOException, InterruptedException;
     }
 
+    /**
+     * Runs the given callable in the background and returns a CompletableFuture
+     * that can be used to retrieve the result.
+     * 
+     * @param <T>      The type of the result.
+     * @param callable The callable to run.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     */
     private static <T> CompletableFuture<T> runInBackground(ThrowingCallable<T> callable) {
         CompletableFuture<T> future = new CompletableFuture<>();
         SwingWorker<T, Void> worker = new SwingWorker<>() {
@@ -54,6 +70,16 @@ public class ReCodEx {
         return future;
     }
 
+    /**
+     * Authenticates the user with the given credentials and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param username The username.
+     * @param password The password.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote kinda hacky
+     */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.login.cas_uk.Response> authenticate(String username,
             String password) {
         return runInBackground(() -> {
@@ -130,9 +156,17 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Retrieves the list of instances the user has access to and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param userId The user's ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/user/{userId}/instances
+     */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.instances.Response> getInstances(UUID userId) {
         return runInBackground(() -> {
-            // ===== GET https://recodex.mff.cuni.cz/api/v1/user/[id]/instances =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/users/%s/instances",
                             URLEncoder.encode(userId.toString(), "UTF-8"))))
@@ -145,10 +179,20 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Retrieves the list of groups the user is a member of and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param ancestors  Whether to include ancestor groups.
+     * @param instanceId The instance ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET
+     *          https://recodex.mff.cuni.cz/api/v1/groups?ancestors={ancestors}&instanceId={instanceId}
+     */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.groups.Response> getGroups(boolean ancestors,
             UUID instanceId) {
         return runInBackground(() -> {
-            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(
                             String.format("https://recodex.mff.cuni.cz/api/v1/groups?ancestors=%s&instanceId=%s",
@@ -163,9 +207,17 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Get details about the user with the given ID and returns a CompletableFuture
+     * that can be used to retrieve the result.
+     * 
+     * @param userId The user's ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/users/{userId}
+     */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.users.$id.Response.Payload> getUser(UUID userId) {
         return runInBackground(() -> {
-            // ===== GET https://recodex.mff.cuni.cz/api/v1/users/[id] =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/users/%s",
                             URLEncoder.encode(userId.toString(), "UTF-8"))))
@@ -178,10 +230,18 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Retrieves the list of assignments for the given group and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param groupId The group's ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/assignments
+     */
     public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.assignments.Response.Payload>> getAssignments(
             UUID groupId) {
         return runInBackground(() -> {
-            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups/[id]/assignments =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/groups/%s/assignments",
                             URLEncoder.encode(groupId.toString(), "UTF-8"))))
@@ -194,13 +254,22 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Retrieves statistics about assignments in a given group and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param groupId The group's ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET
+     *          https://recodex.mff.cuni.cz/api/v1/groups/{groupId}/students/stats
+     */
     public static CompletableFuture<List<cz.cuni.mff.recodex.api.v1.groups.$id.students.stats.Response.Payload>> getStats(
-            UUID id) {
+            UUID groupId) {
         return runInBackground(() -> {
-            // ===== GET https://recodex.mff.cuni.cz/api/v1/groups/[id]/students/stats =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(String.format("https://recodex.mff.cuni.cz/api/v1/groups/%s/students/stats",
-                            URLEncoder.encode(id.toString(), "UTF-8"))))
+                            URLEncoder.encode(groupId.toString(), "UTF-8"))))
                     .header("Authorization", "Bearer " + accessToken)
                     .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
@@ -210,16 +279,23 @@ public class ReCodEx {
         });
     }
 
+    /**
+     * Retrieves the list of submissions for the given assignment and returns a
+     * CompletableFuture that can be used to retrieve the result.
+     * 
+     * @param assignmentId The assignment's ID.
+     * @return A CompletableFuture that can be used to retrieve the result.
+     * 
+     * @apiNote GET
+     *          https://recodex.mff.cuni.cz/api/v1/exercise-assignments/{groupId}/can-submit
+     */
     public static CompletableFuture<cz.cuni.mff.recodex.api.v1.exercise_assignments.$id.can_submit.Response.Payload> getCanSubmit(
-            UUID id) {
+            UUID groupId) {
         return runInBackground(() -> {
-            // =====
-            // GET https://recodex.mff.cuni.cz/api/v1/exercise-assignments/[id]/can-submit
-            // =====
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(
                             String.format("https://recodex.mff.cuni.cz/api/v1/exercise-assignments/%s/can-submit",
-                                    URLEncoder.encode(id.toString(), "UTF-8"))))
+                                    URLEncoder.encode(groupId.toString(), "UTF-8"))))
                     .header("Authorization", "Bearer " + accessToken)
                     .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());

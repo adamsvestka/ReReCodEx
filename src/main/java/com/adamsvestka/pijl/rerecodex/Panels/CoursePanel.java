@@ -13,12 +13,27 @@ import com.adamsvestka.pijl.rerecodex.Components.CourseCard;
 import com.adamsvestka.pijl.rerecodex.Model.Group;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 
+/**
+ * CoursePanel is a custom JPanel that displays a list of courses in a
+ * scrollable container. Each course is represented by a CourseCard, which
+ * contains relevant information about the course. Courses data is fetched from
+ * the Model instance and the panel gets updated whenever there's a change in
+ * the data. This panel also handles addition and removal of courses
+ * automatically as the data in the Model gets updated.
+ * 
+ * @see CourseCard
+ * @see Group
+ */
 public class CoursePanel extends JPanel {
     private JPanel container;
     private JScrollPane scrollPane;
 
     private List<CourseCard> courses;
 
+    /**
+     * Constructs a new CoursePanel. The panel subscribes to the Model instance and
+     * updates the UI components whenever there's a change in the data.
+     */
     public CoursePanel() {
         super();
 

@@ -21,6 +21,20 @@ import com.adamsvestka.pijl.rerecodex.Model.User;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 
+/**
+ * CourseCard is a custom JPanel component that displays information about a
+ * course, including its name, primary teacher(s), and assignments. The
+ * component provides an expandable view containing a list of AssignmentRow
+ * components representing assignments for the respective course. The expandable
+ * view can be toggled via clicking on the CourseCard. Additional course-related
+ * updates and actions are supported through interaction with a Group object and
+ * a collection of User objects representing the primary admin (teacher) of the
+ * course.
+ * 
+ * @see AssignmentRow
+ * @see Group
+ * @see User
+ */
 public class CourseCard extends JPanel implements MouseListener, ComponentListener {
     private JPanel header;
     private JLabel fullNameLabel;
@@ -32,6 +46,13 @@ public class CourseCard extends JPanel implements MouseListener, ComponentListen
     private Group course;
     private boolean isExpanded = false;
 
+    /**
+     * Constructs a new CourseCard component for the given course. The component
+     * displays information about the course and provides an expandable view of
+     * assignments for the course.
+     * 
+     * @param course The course to display information about
+     */
     public CourseCard(Group course) {
         super();
 

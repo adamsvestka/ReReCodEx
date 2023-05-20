@@ -17,7 +17,19 @@ import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.Model.Assignment;
 import com.adamsvestka.pijl.rerecodex.Panels.AssignmentPanel;
 
+/**
+ * AssignmentRow is a custom JPanel component that represents a single row in
+ * the list of assignments. It displays relevant information about an
+ * Assignment, such as its name, points, max points, and deadline. The row is
+ * interactive and allows the user to click on it to navigate to the detailed
+ * AssignmentPanel view. This class subscribes to updates on the associated
+ * Assignment model and updates the displayed information accordingly.
+ * 
+ * @see Assignment
+ * @see AssignmentPanel
+ */
 public class AssignmentRow extends JPanel implements MouseListener {
+    /** The height of the row in pixels. */
     public static final int height = 40;
 
     private JLabel name;
@@ -27,6 +39,13 @@ public class AssignmentRow extends JPanel implements MouseListener {
 
     private AssignmentPanel assignmentPanel;
 
+    /**
+     * Constructs a new AssignmentRow component for the given assignment. The
+     * component displays information about the assignment and allows the user to
+     * navigate to the detailed AssignmentPanel view.
+     * 
+     * @param assignment The assignment to display information about
+     */
     public AssignmentRow(Assignment assignment) {
         super();
 

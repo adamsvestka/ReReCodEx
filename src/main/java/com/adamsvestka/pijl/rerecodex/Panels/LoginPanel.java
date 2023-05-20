@@ -24,6 +24,19 @@ import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 
+/**
+ * A custom JPanel representing the login panel for the ReCodEx application.
+ * This panel contains form elements for users to input their credentials, such
+ * as username and password fields, a remember me checkbox, and a button to
+ * submit the entered information for authentication. It also displays
+ * appropriate feedback, such as loading progress or error messages, based on
+ * the current authentication state. The panel has a rounded box appearance and
+ * custom box shadow.
+ * 
+ * @see Model
+ * @see LocalStorage
+ * @see ReCodEx
+ */
 public class LoginPanel extends JPanel implements KeyListener {
     private JTextField usernameField;
     private JTextField passwordField;
@@ -31,13 +44,18 @@ public class LoginPanel extends JPanel implements KeyListener {
     private JButton loginButton;
     private JLabel errorLabel;
 
-    enum State {
+    private enum State {
         normal, loading, error
     }
 
     private State state;
     private long startTime;
 
+    /**
+     * Constructs a new LoginPanel. It automatically tries to authenticate the user
+     * with the credentials stored in the LocalStorage. If the authentication
+     * succeeds, the user is redirected to the main application view.
+     */
     public LoginPanel() {
         super();
 

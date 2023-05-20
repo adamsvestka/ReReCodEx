@@ -11,6 +11,12 @@ import java.awt.Stroke;
 
 import javax.swing.border.Border;
 
+/**
+ * A border that adds a shadow effect to a component. Note that This border
+ * paints inwards meaning it reduces the size of the component.
+ * 
+ * @see javax.swing.JComponent#getInsets() JComponent.getInsets()
+ */
 public class RoundedBorder implements Border {
     private Color borderColor;
     private Stroke stroke;
@@ -18,6 +24,13 @@ public class RoundedBorder implements Border {
     private int radius;
     private boolean visible = true;
 
+    /**
+     * Constructs a new RoundedBorder with the given parameters.
+     * 
+     * @param borderColor The color of the border.
+     * @param thickness   The thickness of the border.
+     * @param radius      The radius of the border.
+     */
     public RoundedBorder(Color borderColor, float thickness, int radius) {
         this.borderColor = borderColor;
         this.radius = radius;
@@ -26,6 +39,11 @@ public class RoundedBorder implements Border {
         this.stroke = new BasicStroke(thickness);
     }
 
+    /**
+     * Sets the color of the border.
+     * 
+     * @param borderColor The new color of the border.
+     */
     public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
     }
@@ -53,10 +71,20 @@ public class RoundedBorder implements Border {
         return true;
     }
 
+    /**
+     * Sets whether or not the border is visible.
+     * 
+     * @param visible Whether or not the border is visible.
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
+    /**
+     * Returns whether or not the border is visible.
+     * 
+     * @return Whether or not the border is visible.
+     */
     public boolean isVisible() {
         return visible;
     }

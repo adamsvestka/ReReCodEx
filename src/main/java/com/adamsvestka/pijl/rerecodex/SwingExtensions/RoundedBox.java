@@ -8,10 +8,21 @@ import java.awt.RenderingHints;
 
 import javax.swing.border.Border;
 
+/**
+ * A border that adds a shadow effect to a component. Note that This border
+ * paints inwards meaning it reduces the size of the component.
+ * 
+ * @see javax.swing.JComponent#getInsets() JComponent.getInsets()
+ */
 public class RoundedBox implements Border {
     private int radius;
     private boolean visible = true;
 
+    /**
+     * Constructs a new RoundedBox with the given parameters.
+     * 
+     * @param radius The radius of the border.
+     */
     public RoundedBox(int radius) {
         this.radius = radius;
     }
@@ -38,10 +49,20 @@ public class RoundedBox implements Border {
         return true;
     }
 
+    /**
+     * Sets the visibility of the border.
+     * 
+     * @param visible The new visibility of the border.
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
+    /**
+     * Returns the visibility of the border.
+     * 
+     * @return The visibility of the border.
+     */
     public boolean isVisible() {
         return visible;
     }

@@ -24,9 +24,27 @@ import com.adamsvestka.pijl.rerecodex.SwingExtensions.CustomHTMLEditorKit;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.VerticalScrollPanel;
 
+/**
+ * This class represents a custom graphical component, specifically designed to
+ * display assignment description details in a visually appealing and organized
+ * manner. The AssignmentDescription extends VerticalScrollPanel and implements
+ * HyperlinkListener to provide hyperlink handling. The component consists of a
+ * title label and a JEditorPane which renders HTML content using a
+ * CustomHTMLEditorKit. The assignment's body is parsed and rendered as an HTML
+ * string.
+ * 
+ * @see VerticalScrollPanel
+ * @see HyperlinkListener
+ * @see CustomHTMLEditorKit
+ * @see Assignment
+ * @see JEditorPane
+ */
 public class AssignmentDescription extends VerticalScrollPanel implements HyperlinkListener {
     private JEditorPane bodyPane;
 
+    /**
+     * Constructs a new AssignmentDescription component.
+     */
     public AssignmentDescription() {
         super();
 
@@ -67,6 +85,11 @@ public class AssignmentDescription extends VerticalScrollPanel implements Hyperl
         add(bodyPane);
     }
 
+    /**
+     * Updates the component with the given assignment.
+     * 
+     * @param assignment The assignment to update the component with
+     */
     public void update(Assignment assignment) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(assignment.body);

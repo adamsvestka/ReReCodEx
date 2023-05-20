@@ -27,11 +27,30 @@ import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.RoundedBox;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.VerticalScrollPanel;
 
+/**
+ * AssignmentStatus is a custom Swing panel component that displays the detailed
+ * status of a specific assignment. This component inherits from
+ * VerticalScrollPanel and displays assignment details like deadline, points
+ * limit, correctness threshold, allowed environments, submission attempts, and
+ * solution file restrictions. It supports updating data with a provided
+ * Assignment object and handles the layout and styling of its child components,
+ * including JLabels for the assignment's attribute titles and values, and
+ * graphic lines for separating content.
+ * 
+ * @see VerticalScrollPanel
+ * @see Assignment
+ */
 public class AssignmentStatus extends VerticalScrollPanel {
     private JLabel nameLabel;
     private List<Entry<String, Function<Assignment, String>>> data = new ArrayList<>();
     private Map<String, JLabel> labels = new HashMap<>();
 
+    /**
+     * Constructs a new AssignmentStatus component. The component displays
+     * information about the assignment, such as its deadline, points limit,
+     * correctness threshold, allowed environments, submission attempts, and
+     * solution file restrictions.
+     */
     public AssignmentStatus() {
         super();
 
@@ -104,6 +123,11 @@ public class AssignmentStatus extends VerticalScrollPanel {
         layout.setVerticalGroup(vsGroup);
     }
 
+    /**
+     * Update the component with the given assignment data.
+     * 
+     * @param assignment The assignment to display information about.
+     */
     public void update(Assignment assignment) {
         if (assignment.name == null || assignment.deadlines == null)
             return;

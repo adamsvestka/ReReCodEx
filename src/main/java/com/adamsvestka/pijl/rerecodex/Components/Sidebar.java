@@ -16,6 +16,18 @@ import javax.swing.border.EmptyBorder;
 
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 
+/**
+ * A custom JPanel representing a sidebar with selectable buttons for different
+ * sections. The sidebar provides options to add and remove buttons with text
+ * and icons, manages button states, and provides a callback that returns the
+ * associated value of the selected button. It also includes a user card at the
+ * top of the sidebar with a profile picture, greeting and image.
+ *
+ * @param <T> The type of value associated with each SidebarButton, passed to
+ *            the callback when a button is selected
+ * 
+ * @see SidebarButton
+ */
 public class Sidebar<T> extends JPanel {
     private static final Color color_background = ColorPalette.dark_gray;
     private static final Color color_foreground = ColorPalette.light_gray;
@@ -27,6 +39,13 @@ public class Sidebar<T> extends JPanel {
     private List<Entry<SidebarButton, T>> buttons = new ArrayList<>();
     private Consumer<T> onChange;
 
+    /**
+     * Constructs a new Sidebar component with the given callback. The callback is
+     * invoked whenever a button is selected, and is passed the value associated
+     * with the button.
+     * 
+     * @param onChange The callback invoked when a button is selected
+     */
     public Sidebar(Consumer<T> onChange) {
         super();
 
@@ -59,6 +78,9 @@ public class Sidebar<T> extends JPanel {
         container.add(menuLabel);
     }
 
+    /**
+     * Removes all buttons from the sidebar.
+     */
     public void clearButtons() {
         buttons.clear();
         for (var component : container.getComponents())
@@ -66,11 +88,25 @@ public class Sidebar<T> extends JPanel {
                 container.remove(component);
     }
 
+    /**
+     * Deselects all buttons in the sidebar. This method is useful when navigating
+     * to a page that is not represented by a button in the sidebar.
+     */
     public void deselectButtons() {
         for (var entry : buttons)
             entry.getKey().setActive(false);
     }
 
+    /**
+     * Adds a new button to the sidebar with the given icon, text and value. The
+     * value is passed to the callback when the button is selected.
+     * 
+     * @param icon  The icon to display on the button
+     * @param text  The text to display on the button
+     * @param value The value associated with the button
+     * 
+     * @see SidebarButton
+     */
     public void addButton(String icon, String text, T value) {
         var button = new SidebarButton(icon, text, e -> {
             var source = (SidebarButton) e.getSource();

@@ -17,6 +17,28 @@ import javax.swing.JButton;
 import com.adamsvestka.pijl.rerecodex.ColorPalette;
 import com.adamsvestka.pijl.rerecodex.SwingExtensions.BoxShadow;
 
+/**
+ * Button is a custom JButton component that provides a modernized appearance
+ * with smooth hover, focus and click effects. The button comes with predefined
+ * colors and a box shadow border, giving it a sleek appearance consistent with
+ * the ColorPalette used within the application. The focus, hover and active
+ * states are automatically handled, resulting in an appealing transition
+ * between these states.
+ *
+ * This class extends the default JButton functionality with custom paint
+ * methods and event listeners to implement the desired visual effects. Button
+ * can be instantiated with the same parameters as a regular JButton, and also
+ * accepts an ActionListener to provide an onClick action.
+ *
+ * The custom event listeners and paint methods ensure that the visual
+ * enhancements do not interfere with the intended functionality of the JButton
+ * component.
+ * 
+ * @see JButton
+ * @see ActionListener
+ * @see MouseListener
+ * @see FocusListener
+ */
 public class Button extends JButton implements MouseListener, FocusListener {
     private static final Color color_background1 = ColorPalette.green;
     private static final Color color_background2 = ColorPalette.green2;
@@ -33,12 +55,17 @@ public class Button extends JButton implements MouseListener, FocusListener {
     private boolean active = false;
     private boolean focused = false;
 
+    /**
+     * Constructs a new button with the given text and click listener
+     * 
+     * @param text    The text displayed on the button
+     * @param onClick The action to be performed when the button is clicked
+     */
     public Button(String text, ActionListener onClick) {
         super(text);
 
         setForeground(color_foreground);
         setFont(getFont().deriveFont(16f));
-
         setBorder(new BoxShadow(0, 1, 3, 0, new Color(0x3f000000, true), 10));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setFocusPainted(false);
