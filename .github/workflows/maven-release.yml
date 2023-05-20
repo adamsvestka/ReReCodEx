@@ -1,0 +1,54 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseName:
+        description: 'Release name'
+        required: true
+        default: 'Release ${{ github.sha }}'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
+    - name: Get Artifact Info
+      id: artifact_info
+      run: |
+        artifact_name=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
+        artifact_version=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+        echo "::set-output name=name::${artifact_name}"
+        echo "::set-output name=version::${artifact_version}"
+
+    - name: Build JAR
+      run: mvn package
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: ${{ github.event.inputs.releaseName }}
+        draft: false
+        prerelease: false
+
+    - name: Upload JAR to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/*.jar
+        asset_name: ${{ steps.artifact_info.outputs.name }}-${{ steps.artifact_info.outputs.version }}.jar
+        asset_content_type: application/java-archive
