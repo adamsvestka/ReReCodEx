@@ -75,7 +75,6 @@ public class AssignmentDescription extends VerticalScrollPanel implements Hyperl
         bodyPane.setEditorKit(new CustomHTMLEditorKit());
         bodyPane.setEditable(false);
         bodyPane.setOpaque(false);
-        bodyPane.setFont(bodyPane.getFont());
         bodyPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
         bodyPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 

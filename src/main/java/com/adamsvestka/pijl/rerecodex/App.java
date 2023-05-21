@@ -17,6 +17,7 @@ import com.adamsvestka.pijl.rerecodex.Model.Group;
 import com.adamsvestka.pijl.rerecodex.Model.Model;
 import com.adamsvestka.pijl.rerecodex.Model.User;
 import com.adamsvestka.pijl.rerecodex.Panels.CoursePanel;
+import com.adamsvestka.pijl.rerecodex.Panels.HelpPanel;
 import com.adamsvestka.pijl.rerecodex.Panels.LoginPanel;
 
 /**
@@ -97,15 +98,20 @@ public class App extends JFrame {
         instance.mainarea.repaint();
     }
 
+    private final JPanel loginPanel = new LoginPanel();
+    private final JPanel helpPanel = new HelpPanel();
+    private final JPanel coursePanel = new CoursePanel();
+
     private void update(User user) {
         sidebar.clearButtons();
 
         if (!user.isLoggedIn()) {
-            sidebar.addButton("/icons/login.png", "Login", new LoginPanel());
+            sidebar.addButton("/icons/login.png", "Login", loginPanel);
+            sidebar.addButton("/icons/help.png", "Help", helpPanel);
         } else {
-            sidebar.addButton("/icons/dashboard.png", "Courses", new CoursePanel());
+            sidebar.addButton("/icons/dashboard.png", "Courses", coursePanel);
             // sidebar.addButton(null, "􀈕 Assignments", new JPanel());
-            sidebar.addButton("/icons/help.png", "Help", new JPanel());
+            sidebar.addButton("/icons/help.png", "Help", helpPanel);
 
             var mffInstanceId = user.instances.get(0);
             ReCodEx.getInstances(user.id)
@@ -117,6 +123,9 @@ public class App extends JFrame {
                         return null;
                     });
         }
+
+        sidebar.revalidate();
+        sidebar.repaint();
     }
 
     /**

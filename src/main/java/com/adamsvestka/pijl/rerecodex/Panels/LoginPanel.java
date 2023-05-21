@@ -76,6 +76,15 @@ public class LoginPanel extends JPanel implements KeyListener {
             rememberMeCheckbox.setSelected(true);
             loginButton.doClick();
         }
+
+        Model.getInstance().user.subscribe(e -> {
+            if (!e.isLoggedIn()) {
+                setState(State.normal);
+                usernameField.setText("");
+                passwordField.setText("");
+                rememberMeCheckbox.setSelected(false);
+            }
+        });
     }
 
     private void initComponents() {

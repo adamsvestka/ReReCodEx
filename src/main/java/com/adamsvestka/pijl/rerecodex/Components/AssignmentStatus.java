@@ -59,7 +59,7 @@ public class AssignmentStatus extends VerticalScrollPanel {
         data.add(new SimpleEntry<>("Points limit:",
                 a -> Integer.toString(a.deadlines.get(0).points)));
         data.add(new SimpleEntry<>("Correctness threshold:",
-                a -> Integer.toString(100 * a.pointsPercentualThreshold) + " %"));
+                a -> Integer.toString(a.pointsPercentualThreshold) + " %"));
         data.add(new SimpleEntry<>("Allowed environments:",
                 a -> String.join(", ", a.runtimeEnvironments)));
         data.add(new SimpleEntry<>("Submission attempts:",
